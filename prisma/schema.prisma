@@ -7,6 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ExpenseCategory {
+  ALL
+  FOOD
+  HOUSING
+  UTILITIES
+  DAILY
+  TRAVEL
+  ENTERTAINMENT
+  OTHER
+}
+
 model User {
   id          Int           @id @default(autoincrement())
   email       String        @unique
@@ -32,14 +43,8 @@ model Group {
   name        String
   inviteCode  String        @unique
   createdAt   DateTime      @default(now())
-  
   users       User[]
-
   creatorId   Int
-  // creator     User          @relation("CreatedGroups", fields: [creatorId], references: [id])
-  
-  // pastMembers User[]        @relation("PastGroups")
-
   createdRecords CreatedGroup[]
   pastRecords    PastGroup[]
   expenses       Expense[]
@@ -68,14 +73,13 @@ model Expense {
   amount      Int
   description String
   date        DateTime @default(now())
-  category    String   @default("OTHER")
-  
+  category    ExpenseCategory @default(OTHER)
   userId      Int      
   user        User     @relation(fields: [userId], references: [id])
-
   groupId     String?
   group       Group?   @relation(fields: [groupId], references: [id])
-
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  @@index([groupId])
+  @@index([userId, date])
 }

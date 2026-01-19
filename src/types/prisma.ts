@@ -2,11 +2,13 @@
  * Type definitions for Prisma data used in Next.js pages
  * These types match the data returned by backend services
  */
-import { Prisma } from '@prisma/client';
+import { Prisma, $Enums } from '@prisma/client';
 
 // ============================================
 // Base model types from Prisma
 // ============================================
+
+export type ExpenseCategory = $Enums.ExpenseCategory;
 
 /** User model type */
 export type User = Prisma.UserGetPayload<{}>;

@@ -3,6 +3,7 @@
 import { prisma } from '@/backend/db';
 import { getAuthenticatedUser } from '@/backend/auth/utils';
 import { revalidatePath } from 'next/cache';
+import { ExpenseCategory } from '@prisma/client';
 
 export async function addExpense(prevState: any, formData: FormData) {
   const user = await getAuthenticatedUser();
@@ -23,7 +24,7 @@ export async function addExpense(prevState: any, formData: FormData) {
       recordDate = new Date(dateStr);
   }
   
-  const category = (formData.get('category') as string) || 'OTHER';
+  const category = (formData.get('category') as ExpenseCategory) || ExpenseCategory.OTHER;
 
   if (!amount || isNaN(amount)) return { error: '金額を正しく入力してください' };
   if (!description) return { error: '内容を入力してください' };

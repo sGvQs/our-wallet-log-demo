@@ -2,9 +2,10 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useMonth } from '@/context/MonthContext';
+import { ExpenseCategory } from '@prisma/client';
 
 
-export const CATEGORIES: Record<string, string> = {
+export const CATEGORIES: Record<ExpenseCategory, string> = {
   ALL: 'すべて',
   FOOD: '食費',
   HOUSING: '家賃',
@@ -15,7 +16,7 @@ export const CATEGORIES: Record<string, string> = {
   OTHER: 'その他',
 };
 
-export const CATEGORY_COLORS: Record<string, string> = {
+export const CATEGORY_COLORS: Record<ExpenseCategory, string> = {
   ALL: 'var(--color-text-main)',
   FOOD: '#FF6B6B',
   HOUSING: '#4D96FF',
