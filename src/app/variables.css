@@ -1,0 +1,79 @@
+:root {
+  /* Colors - Notion-like Palette */
+  /* Main Backgrounds */
+  --bg-main: #FFFFFF;
+  --bg-sidebar: #F7F7F5;
+  --bg-hover: #EFEFEF;
+  --bg-active: #E5E5E5;
+
+  /* Text */
+  --text-main: #37352F;
+  --text-muted: #787774;
+  --text-placeholder: #9B9A97;
+
+  /* Borders */
+  --border-default: #E9E9E8;
+  --border-active: #37352F;
+
+  /* Accents */
+  --accent-blue: #2EAADC;
+  --accent-red: #EB5757;
+  --accent-orange: #D9730D;
+  --accent-green: #448361;
+
+  /* Semantic Mappings */
+  --color-bg-app: var(--bg-main);
+  --color-bg-surface: var(--bg-main);       /* Cards blend with background in Notion */
+  --color-bg-surface-hover: var(--bg-hover);
+  
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  
+  --color-border: var(--border-default);
+  
+  --color-primary: #37352F; /* Black/Dark Grey is often primary in Notion */
+  --color-primary-light: #F7F7F5;
+  --color-secondary: var(--accent-blue);
+  --color-accent: var(--accent-red);
+
+  /* Shadows - Minimal to None */
+  --shadow-sm: none;
+  --shadow-md: 0 1px 2px rgba(15, 15, 15, 0.05); /* Very subtle if needed */
+  --shadow-lg: 0 4px 8px rgba(15, 15, 15, 0.05);
+  --shadow-popup: 0 0 0 1px rgba(15,15,15, 0.05), 0 3px 6px rgba(15,15,15, 0.1);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  /* Radius */
+  --radius-sm: 4px; /* Flatter radius */
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-base: 100ms ease-out; /* Snappier transitions */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Notion Dark Mode */
+    --bg-main: #191919;
+    --bg-sidebar: #202020;
+    --bg-hover: #2F2F2F;
+    --bg-active: #373737;
+
+    --text-main: #D4D4D4;
+    --text-muted: #9B9A97;
+    --border-default: #2F2F2F;
+    
+    --color-primary: #D4D4D4;
+    --color-primary-light: #2F2F2F;
+  }
+}
