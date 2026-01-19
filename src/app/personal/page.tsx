@@ -1,5 +1,4 @@
-import { getCurrentUser, getUserGroup, getGroupExpenses, getPersonalExpenses } from '@/backend/services/data';
-import { GroupManager } from '@/components/GroupManager';
+import { getCurrentUser, getPersonalExpenses } from '@/backend/services/data';
 import { Card } from '@/components/ui/Card';
 import { AddExpenseForm } from '@/components/AddExpenseForm';
 import { ExpenseList } from '@/components/ExpenseList';
@@ -8,7 +7,6 @@ import { FilterBar } from '@/components/FilterBar';
 export default async function PersonalDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
   const user = await getCurrentUser();
-  const group = await getUserGroup();
 
   if (!user) {
     return (

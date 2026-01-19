@@ -1,12 +1,14 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/backend/db";
+import { cache } from "react";
 
 /**
  * Returns the internal database User object for the currently authenticated Clerk user.
  * If the user exists in Clerk but not in the DB, it creates the DB record.
+ * Cached per request to avoid redundant DB calls.
  */
-export async function getAuthenticatedUser() {
+export const getAuthenticatedUser = cache(async () => {
   const { userId: clerkUserId } = await auth();
   if (!clerkUserId) return null;
 
@@ -65,4 +67,4 @@ export async function getAuthenticatedUser() {
     console.error("Failed to sync user:", error);
     return null;
   }
-}
+});
