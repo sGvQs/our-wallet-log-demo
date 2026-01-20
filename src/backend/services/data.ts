@@ -104,7 +104,7 @@ export const getGroupExpenses = cache(async (month?: string, category?: string) 
   // Map 'user' to 'payer' to keep frontend compatibility if we want, or just update frontend.
   // The frontend likely expects 'payer' or similar. 
   // Let's return as is but we might need to update frontend to use `expense.user`.
-  return expenses.map((e) => ({
+  return expenses.map((e: any) => ({
       ...e,
       payer: e.user, // Alias for compatibility
       payerId: e.userId // Alias for compatibility

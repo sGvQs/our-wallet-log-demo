@@ -2,6 +2,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/backend/db";
 import { cache } from "react";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 /**
  * Returns the internal database User object for the currently authenticated Clerk user.
