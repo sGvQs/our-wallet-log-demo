@@ -22,12 +22,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # デバッグ用: 純正psqlクライアントで接続を試みる
+      - name: Test Connection with PSQL
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          echo "Testing connection with psql..."
+          # DIRECT_URLを使ってバージョン情報を取得できるかテスト
+          psql "$DIRECT_URL" -c "SELECT version();"
+        env:
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+
       - name: Debug Network
         run: |
           echo "Testing connection to Neon..."
           # nc (netcat) コマンドでポート5432が開いているか確認
           nc -zv ep-mute-rain-952417.us-east-2.aws.neon.tech 5432
-          
+
       - name: Generate Prisma Client
         run: npx prisma generate
 
