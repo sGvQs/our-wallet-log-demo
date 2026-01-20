@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useMonth } from '@/context/MonthContext';
-import { ExpenseCategory } from '@prisma/client';
+import { ExpenseCategory } from '@/types/prisma';
 
 
 export const CATEGORIES: Record<ExpenseCategory, string> = {
