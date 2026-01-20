@@ -22,16 +22,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Test Connection with PSQL
-        run: |
-          sudo apt-get update && sudo apt-get install -y postgresql-client
-          echo "Testing connection with psql..."
-          # 変数を直接渡すのではなく、一度シェル変数に代入して確認
-          PSQL_URL="${DIRECT_URL}"
-          psql "$PSQL_URL" -c "SELECT version();"
-        env:
-          DIRECT_URL: ${{ secrets.DIRECT_URL }}
-          
+      # - name: Test Connection with PSQL
+      #   run: |
+      #     sudo apt-get update && sudo apt-get install -y postgresql-client
+      #     echo "Testing connection with psql..."
+      #     # 変数を直接渡すのではなく、一度シェル変数に代入して確認
+      #     PSQL_URL="${DIRECT_URL}"
+      #     psql "$PSQL_URL" -c "SELECT version();"
+      #   env:
+      #     DIRECT_URL: ${{ secrets.DIRECT_URL }}
+
       - name: Debug Network
         run: |
           echo "Testing connection to Neon..."
