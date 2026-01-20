@@ -32,11 +32,11 @@ export const getAuthenticatedUser = cache(async () => {
 
   // 3. Create User and UserIdp transactionally
   try {
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // Check if email already exists (edge case where user might have been created manually or via another provider?)
       // For now, simpler to just create. If email collision is possible, we should handle it.
       // Assuming email is unique in schema.
-      
+
       // Upsert user? Or just create. The schema has email @unique.
       // If we blindly create, we might hit unique constraint if same email but different clerk ID.
       // Let's try to find user by email first to link? 
