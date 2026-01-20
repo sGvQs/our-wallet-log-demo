@@ -22,16 +22,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # デバッグ用: 純正psqlクライアントで接続を試みる
       - name: Test Connection with PSQL
         run: |
           sudo apt-get update && sudo apt-get install -y postgresql-client
           echo "Testing connection with psql..."
-          # DIRECT_URLを使ってバージョン情報を取得できるかテスト
-          psql '$DIRECT_URL' -c 'SELECT version();'
+          # 変数を直接渡すのではなく、一度シェル変数に代入して確認
+          PSQL_URL="${DIRECT_URL}"
+          psql "$PSQL_URL" -c "SELECT version();"
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
-
+          
       - name: Debug Network
         run: |
           echo "Testing connection to Neon..."
