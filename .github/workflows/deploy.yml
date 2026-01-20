@@ -28,7 +28,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y postgresql-client
           echo "Testing connection with psql..."
           # DIRECT_URLを使ってバージョン情報を取得できるかテスト
-          psql $DIRECT_URL -c SELECT version();
+          psql '$DIRECT_URL' -c 'SELECT version();'
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
 
