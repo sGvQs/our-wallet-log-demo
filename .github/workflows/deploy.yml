@@ -22,6 +22,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Debug Network
+        run: |
+          echo "Testing connection to Neon..."
+          # nc (netcat) コマンドでポート5432が開いているか確認
+          nc -zv ep-mute-rain-952417.us-east-2.aws.neon.tech 5432
+
       - name: Run Prisma Migrate Deploy
         run: npx prisma migrate deploy
         env:
