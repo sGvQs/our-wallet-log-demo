@@ -15,8 +15,7 @@ let prismaInstance: PrismaClient;
 neonConfig.webSocketConstructor = ws;
 
 if (connectionString.startsWith('postgres') || connectionString.startsWith('postgresql')) {
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaNeon(pool as any);
+  const adapter = new PrismaNeon({ connectionString });
   prismaInstance = new PrismaClient({ adapter });
 } else {
   // For SQLite, use better-sqlite3 adapter
