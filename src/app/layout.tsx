@@ -51,7 +51,7 @@ export default function RootLayout({
                   <div className="app-container">
                     <header className="app-header">
                       <Link href="/personal" className="app-title">
-                        💰 同棲家計簿
+                        💰 わたしたちの家計簿
                       </Link>
                       <UserButton />
                     </header>

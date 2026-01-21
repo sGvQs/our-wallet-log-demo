@@ -47,15 +47,6 @@ export function FilterBar() {
 
   return (
     <div className="filter-bar">
-      <div className="filter-item">
-        <label className="filter-label">つく</label>
-        <input
-          type="month"
-          value={currentMonth}
-          onChange={handleMonthChange}
-          className="filter-input"
-        />
-      </div>
 
       <div className="filter-item">
         <label className="filter-label">カテゴリー</label>
