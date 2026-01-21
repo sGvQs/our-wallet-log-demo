@@ -8,15 +8,17 @@ const connectionString = `${process.env.DATABASE_URL}`
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-let adapter: PrismaNeon | PrismaBetterSqlite3;
+// let adapter: PrismaNeon | PrismaBetterSqlite3;
 
 
-if (connectionString.startsWith('postgres') || connectionString.startsWith('postgresql')) {
-  adapter = new PrismaNeon({ connectionString });
-} else {
-  // For SQLite, use better-sqlite3 adapter
-  adapter = new PrismaBetterSqlite3({ url: 'dev.db' });
-}
+// if (connectionString.startsWith('postgres') || connectionString.startsWith('postgresql')) {
+//   adapter = new PrismaNeon({ connectionString });
+// } else {
+//   // For SQLite, use better-sqlite3 adapter
+//   adapter = new PrismaBetterSqlite3({ url: 'dev.db' });
+// }
+
+const adapter = new PrismaNeon({ connectionString });
 
 export const prisma =
   globalForPrisma.prisma ||
