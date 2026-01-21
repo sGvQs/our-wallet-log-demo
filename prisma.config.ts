@@ -1,18 +1,10 @@
 import { defineConfig, env } from 'prisma/config';
 
+const isSQLite = process.env.DATABASE_URL?.startsWith('file:');
+
 export default defineConfig({
-  schema: "prisma/schema.prisma",
+  schema: isSQLite ? "prisma/sqlite/schema.prisma" : "prisma/schema.prisma",
   datasource: {
-    url: env('DIRECT_URL'),
+    url: isSQLite ? process.env.DATABASE_URL : env('DIRECT_URL'),
   },
 });
-
-// import 'dotenv/config'
-// import { defineConfig, env } from 'prisma/config'
-
-// export default defineConfig({
-//   schema: 'prisma/schema.prisma',
-//   datasource: {
-//     url: env('DIRECT_URL'),
-//   },
-// })
