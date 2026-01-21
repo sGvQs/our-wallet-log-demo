@@ -24,44 +24,45 @@ export function ExpenseList({ expenses, currentUserId }: { expenses: any[], curr
       {expenses.map((expense) => {
         const categoryColor = CATEGORY_COLORS[expense.category as keyof typeof CATEGORY_COLORS] || CATEGORY_COLORS.OTHER;
         const categoryLabel = CATEGORIES[expense.category as keyof typeof CATEGORIES] || 'その他';
-        
+
         return (
-        <Card key={expense.id} className="expense-card">
-          <div className="expense-content">
-            <div className="expense-info">
-              <div 
-                className="expense-category-badge"
-                style={{ 
-                  color: categoryColor,
-                  background: `${categoryColor}15`, 
-                }}
-              >
-                {categoryLabel}
+          <Card key={expense.id} className="expense-card">
+            <div className="expense-content">
+              <div className="expense-info">
+                <div
+                  className="expense-category-badge"
+                  style={{
+                    color: categoryColor,
+                    background: `${categoryColor}15`,
+                  }}
+                >
+                  {categoryLabel}
+                </div>
+                <div className="expense-description">{expense.description}</div>
               </div>
-              <div className="expense-description">{expense.description}</div>
-            </div>
-            <div className="expense-actions">
-              <div className="expense-amount">
-                ¥{expense.amount.toLocaleString()}
+              <div className="expense-actions">
+                <div className="expense-amount">
+                  ¥{expense.amount.toLocaleString()}
+                </div>
+                {(expense.payerId === currentUserId || expense.userId === currentUserId) && (
+                  <Button
+                    variant="ghost"
+                    disabled={isPending}
+                    onClick={() => {
+                      startTransition(async () => {
+                        await deleteExpense(expense.id);
+                      });
+                    }}
+                    style={{ fontSize: '0.8rem', padding: '0.25rem 0.5rem', color: 'var(--color-accent)', opacity: 0.5 }}
+                  >
+                    ✕
+                  </Button>
+                )}
               </div>
-              {expense.payerId === currentUserId && (
-                 <Button 
-                   variant="ghost" 
-                   disabled={isPending}
-                   onClick={() => {
-                     startTransition(async () => {
-                            await deleteExpense(expense.id);
-                        });
-                   }}
-                   style={{ fontSize: '0.8rem', padding: '0.25rem 0.5rem', color: 'var(--color-accent)', opacity: 0.5 }}
-                 >
-                   ✕
-                 </Button>
-              )}
             </div>
-          </div>
-        </Card>
-      )})}
+          </Card>
+        )
+      })}
     </div>
   );
 }

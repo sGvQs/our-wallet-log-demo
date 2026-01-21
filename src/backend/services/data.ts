@@ -4,7 +4,7 @@ import { getAuthenticatedUser } from '@/backend/auth/utils';
 import { GroupSettingsData, GroupWithMembers, ExpenseWithPayer, User, Expense, UserBasic } from '@/types/prisma';
 
 export const getCurrentUser = cache(async () => {
-   return await getAuthenticatedUser();
+  return await getAuthenticatedUser();
 });
 
 export const getUserGroup = cache(async () => {
@@ -15,13 +15,13 @@ export const getUserGroup = cache(async () => {
   const userWithGroups = await prisma.user.findUnique({
     where: { id: user.id },
     include: {
-        groups: {
-            include: {
-                users: {
-                    select: { id: true, name: true, email: true }
-                }
-            }
+      groups: {
+        include: {
+          users: {
+            select: { id: true, name: true, email: true }
+          }
         }
+      }
     }
   });
 
@@ -33,9 +33,9 @@ export const getPersonalExpenses = cache(async (month?: string, category?: strin
   const user = await getAuthenticatedUser();
   if (!user) return null;
 
-  const where: any = { 
+  const where: any = {
     OR: [
-      {userId: user.id},
+      { userId: user.id },
     ]
   };
 
@@ -44,7 +44,7 @@ export const getPersonalExpenses = cache(async (month?: string, category?: strin
     const [year, m] = month.split('-').map(Number);
     const startDate = new Date(year, m - 1, 1);
     const endDate = new Date(year, m, 0, 23, 59, 59, 999);
-    
+
     where.date = {
       gte: startDate,
       lte: endDate
@@ -55,11 +55,15 @@ export const getPersonalExpenses = cache(async (month?: string, category?: strin
     where.category = category;
   }
 
-  return  await prisma.expense.findMany({
+  const expenses = await prisma.expense.findMany({
     where,
     orderBy: { date: 'desc' }
   });
 
+  return expenses.map((e: any) => ({
+    ...e,
+    payerId: e.userId // Alias for compatibility with ExpenseList
+  }));
 });
 
 
@@ -68,7 +72,7 @@ export const getGroupExpenses = cache(async (month?: string, category?: string) 
   if (!group) return [];
 
   // Use explicit groupId if available, otherwise fallback to member user IDs (for legacy data)
-  const where: any = { 
+  const where: any = {
     OR: [
       { groupId: group.id },
       { userId: { in: group.users.map((u: UserBasic) => u.id) }, groupId: null }
@@ -80,7 +84,7 @@ export const getGroupExpenses = cache(async (month?: string, category?: string) 
     const [year, m] = month.split('-').map(Number);
     const startDate = new Date(year, m - 1, 1);
     const endDate = new Date(year, m, 0, 23, 59, 59, 999);
-    
+
     where.date = {
       gte: startDate,
       lte: endDate
@@ -94,9 +98,9 @@ export const getGroupExpenses = cache(async (month?: string, category?: string) 
   const expenses = await prisma.expense.findMany({
     where,
     include: {
-        user: {
-            select: { id: true, name: true }
-        }
+      user: {
+        select: { id: true, name: true }
+      }
     },
     orderBy: { date: 'desc' }
   });
@@ -105,9 +109,9 @@ export const getGroupExpenses = cache(async (month?: string, category?: string) 
   // The frontend likely expects 'payer' or similar. 
   // Let's return as is but we might need to update frontend to use `expense.user`.
   return expenses.map((e: any) => ({
-      ...e,
-      payer: e.user, // Alias for compatibility
-      payerId: e.userId // Alias for compatibility
+    ...e,
+    payer: e.user, // Alias for compatibility
+    payerId: e.userId // Alias for compatibility
   }));
 });
 
