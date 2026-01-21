@@ -1,8 +1,10 @@
+import { Suspense } from 'react';
 import { getCurrentUser, getPersonalExpenses } from '@/backend/services/data';
 import { Card } from '@/components/ui/Card';
 import { AddExpenseForm } from '@/components/AddExpenseForm';
 import { ExpenseList } from '@/components/ExpenseList';
 import { FilterBar } from '@/components/FilterBar';
+import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
 
 export default async function PersonalDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
@@ -17,50 +19,67 @@ export default async function PersonalDashboardPage(props: { searchParams: Promi
   }
 
   const currentMonth = searchParams.month || new Date().toISOString().slice(0, 7);
-  
-  const myExpenses = await getPersonalExpenses(currentMonth, searchParams.category) ?? [];
-  
-  const myTotalAmount = myExpenses?.reduce((sum: number, exp: any) => sum + exp.amount, 0);
 
   return (
     <div className="dashboard-grid">
       {/* Main Content: Add Expense & My List */}
       <div className="dashboard-main">
-         <div style={{ marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: '1rem' }}>あたらしく記録する</h2>
-            <AddExpenseForm />
-         </div>
-         
-         <div className="dashboard-header">
-           <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>自分の支出一覧</h2>
-           <FilterBar />
-         </div>
-         
-         {myExpenses?.length === 0 ? (
-           <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)', background: 'var(--color-bg-surface)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
-             まだ支出がありません
-           </div>
-         ) : (
-           <ExpenseList expenses={myExpenses} currentUserId={user.id} />
-         )}
+        <div style={{ marginBottom: '2rem' }}>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: '1rem' }}>あたらしく記録する</h2>
+          <AddExpenseForm />
+        </div>
+
+        <div className="dashboard-header">
+          <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>自分の支出一覧</h2>
+          <FilterBar />
+        </div>
+
+        <Suspense fallback={<ExpenseListSkeleton />}>
+          <PersonalExpenses currentMonth={currentMonth} category={searchParams.category} userId={user.id} />
+        </Suspense>
       </div>
 
       {/* Sidebar: Summary */}
       <div className="dashboard-sidebar">
-          <Card>
-              <div style={{ marginBottom: '1.5rem' }}>
-                 <h3 style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>自分の支出 ({currentMonth})</h3>
-                 <p style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-text-main)' }}>
-                     ¥{myTotalAmount.toLocaleString()}
-                 </p>
-              </div>
-              {searchParams.category && searchParams.category !== 'ALL' && (
-                <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>
-                  カテゴリー: {searchParams.category}
-                </p>
-              )}
-          </Card>
+        <Card>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h3 style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>自分の支出 ({currentMonth})</h3>
+            <Suspense fallback={<Skeleton className="skeleton-text" style={{ height: '3rem', width: '80%' }} />}>
+              <PersonalSummary currentMonth={currentMonth} category={searchParams.category} />
+            </Suspense>
+          </div>
+          {searchParams.category && searchParams.category !== 'ALL' && (
+            <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>
+              カテゴリー: {searchParams.category}
+            </p>
+          )}
+        </Card>
       </div>
     </div>
+  );
+}
+
+async function PersonalExpenses({ currentMonth, category, userId }: { currentMonth: string, category?: string, userId: number }) {
+  const myExpenses = await getPersonalExpenses(currentMonth, category) ?? [];
+
+  if (myExpenses.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)', background: 'var(--color-bg-surface)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
+        まだ支出がありません
+      </div>
+    );
+  }
+
+  return <ExpenseList expenses={myExpenses} currentUserId={userId} />;
+}
+
+async function PersonalSummary({ currentMonth, category }: { currentMonth: string, category?: string }) {
+  const myExpenses = await getPersonalExpenses(currentMonth, category) ?? [];
+  const myTotalAmount = myExpenses?.reduce((sum: number, exp: any) => sum + exp.amount, 0);
+
+  return (
+    <p style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-text-main)' }}>
+      ¥{myTotalAmount.toLocaleString()}
+    </p>
   );
 }
