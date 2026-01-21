@@ -34,13 +34,13 @@ export default async function PersonalDashboardPage(props: { searchParams: Promi
           <FilterBar />
         </div>
 
-        <Suspense fallback={<ExpenseListSkeleton />}>
+        {/* <Suspense fallback={<ExpenseListSkeleton />}>
           <PersonalExpenses currentMonth={currentMonth} category={searchParams.category} userId={user.id} />
-        </Suspense>
+        </Suspense> */}
       </div>
 
       {/* Sidebar: Summary */}
-      <div className="dashboard-sidebar">
+      {/* <div className="dashboard-sidebar">
         <Card>
           <div style={{ marginBottom: '1.5rem' }}>
             <h3 style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>自分の支出 ({currentMonth})</h3>
@@ -54,7 +54,7 @@ export default async function PersonalDashboardPage(props: { searchParams: Promi
             </p>
           )}
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 }
