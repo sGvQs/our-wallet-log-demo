@@ -8,13 +8,17 @@ const connectionString = `${process.env.DATABASE_URL}`
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-let adapter: PrismaNeon | PrismaBetterSqlite3;
-
+let adapter: any;
 
 if (connectionString.startsWith('postgres') || connectionString.startsWith('postgresql')) {
-  adapter = new PrismaNeon({ connectionString });
+  // Use @neondatabase/serverless with Pool and WebSockets for production performance
+  const { Pool, neonConfig } = require('@neondatabase/serverless');
+  const ws = require('ws');
+  neonConfig.webSocketConstructor = ws;
+  const pool = new Pool({ connectionString });
+  adapter = new PrismaNeon(pool as any);
 } else {
-  // For SQLite, use better-sqlite3 adapter
+  // Local development uses better-sqlite3
   adapter = new PrismaBetterSqlite3({ url: 'dev.db' });
 }
 
