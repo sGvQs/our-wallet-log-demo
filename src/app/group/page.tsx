@@ -8,20 +8,6 @@ import { ExpenseListSkeleton, Skeleton, SidebarSkeleton } from '@/components/Ske
 
 export default async function GroupDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
-  const user = await getCurrentUser();
-  const group = await getUserGroup();
-
-  if (!group || !user) {
-    return (
-      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>ようこそ、{user?.name}さん</h1>
-        <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
-          設定からグループを作成するか、既存のグループに参加しましょう。
-        </p>
-      </div>
-    );
-  }
-
   const currentMonth = searchParams.month || new Date().toISOString().slice(0, 7);
 
   return (
@@ -36,19 +22,24 @@ export default async function GroupDashboardPage(props: { searchParams: Promise<
         </div>
 
         <Suspense fallback={<ExpenseListSkeleton />}>
-          <GroupExpensesSection currentMonth={currentMonth} category={searchParams.category} userId={user.id} />
+          <GroupExpensesSection currentMonth={currentMonth} category={searchParams.category} />
         </Suspense>
       </div>
 
       {/* Sidebar: Summary & Settlements */}
       <Suspense fallback={<SidebarSkeleton />}>
-        <GroupSidebarSection currentMonth={currentMonth} category={searchParams.category} group={group} />
+        <GroupSidebarSection currentMonth={currentMonth} category={searchParams.category} />
       </Suspense>
     </div>
   );
 }
 
-async function GroupExpensesSection({ currentMonth, category, userId }: { currentMonth: string, category?: string, userId: number }) {
+async function GroupExpensesSection({ currentMonth, category }: { currentMonth: string, category?: string }) {
+  const user = await getCurrentUser();
+  const group = await getUserGroup();
+
+  if (!group || !user) return <GroupAuthError user={user} />;
+
   const expenses = await getGroupExpenses(currentMonth, category);
 
   if (expenses.length === 0) {
@@ -59,10 +50,15 @@ async function GroupExpensesSection({ currentMonth, category, userId }: { curren
     );
   }
 
-  return <ExpenseList expenses={expenses} currentUserId={userId} />;
+  return <ExpenseList expenses={expenses} currentUserId={user.id} />;
 }
 
-async function GroupSidebarSection({ currentMonth, category, group }: { currentMonth: string, category?: string, group: any }) {
+async function GroupSidebarSection({ currentMonth, category }: { currentMonth: string, category?: string }) {
+  const user = await getCurrentUser();
+  const group = await getUserGroup();
+
+  if (!group || !user) return null;
+
   const expenses = await getGroupExpenses(currentMonth, category);
   const totalAmount = expenses.reduce((sum: number, exp: { amount: number }) => sum + exp.amount, 0);
 
@@ -145,6 +141,17 @@ async function GroupSidebarSection({ currentMonth, category, group }: { currentM
           ))}
         </div>
       </Card>
+    </div>
+  );
+}
+
+function GroupAuthError({ user }: { user: any }) {
+  return (
+    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+      <h1 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>ようこそ、{user?.name || 'ゲスト'}さん</h1>
+      <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
+        設定からグループを作成するか、既存のグループに参加しましょう。
+      </p>
     </div>
   );
 }

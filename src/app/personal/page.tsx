@@ -8,16 +8,6 @@ import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
 
 export default async function PersonalDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
-  const user = await getCurrentUser();
-
-  if (!user) {
-    return (
-      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>ログインしていません。</h1>
-      </div>
-    );
-  }
-
   const currentMonth = searchParams.month || new Date().toISOString().slice(0, 7);
 
   return (
@@ -34,18 +24,18 @@ export default async function PersonalDashboardPage(props: { searchParams: Promi
           <FilterBar />
         </div>
 
-        {/* <Suspense fallback={<ExpenseListSkeleton />}>
-          <PersonalExpenses currentMonth={currentMonth} category={searchParams.category} userId={user.id} />
-        </Suspense> */}
+        <Suspense fallback={<ExpenseListSkeleton />}>
+          <PersonalExpensesSection currentMonth={currentMonth} category={searchParams.category} />
+        </Suspense>
       </div>
 
       {/* Sidebar: Summary */}
-      {/* <div className="dashboard-sidebar">
+      <div className="dashboard-sidebar">
         <Card>
           <div style={{ marginBottom: '1.5rem' }}>
             <h3 style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>自分の支出 ({currentMonth})</h3>
             <Suspense fallback={<Skeleton className="skeleton-text" style={{ height: '3rem', width: '80%' }} />}>
-              <PersonalSummary currentMonth={currentMonth} category={searchParams.category} />
+              <PersonalSummarySection currentMonth={currentMonth} category={searchParams.category} />
             </Suspense>
           </div>
           {searchParams.category && searchParams.category !== 'ALL' && (
@@ -54,12 +44,15 @@ export default async function PersonalDashboardPage(props: { searchParams: Promi
             </p>
           )}
         </Card>
-      </div> */}
+      </div>
     </div>
   );
 }
 
-async function PersonalExpenses({ currentMonth, category, userId }: { currentMonth: string, category?: string, userId: number }) {
+async function PersonalExpensesSection({ currentMonth, category }: { currentMonth: string, category?: string }) {
+  const user = await getCurrentUser();
+  if (!user) return <AuthRedirect />;
+
   const myExpenses = await getPersonalExpenses(currentMonth, category) ?? [];
 
   if (myExpenses.length === 0) {
@@ -70,10 +63,10 @@ async function PersonalExpenses({ currentMonth, category, userId }: { currentMon
     );
   }
 
-  return <ExpenseList expenses={myExpenses} currentUserId={userId} />;
+  return <ExpenseList expenses={myExpenses} currentUserId={user.id} />;
 }
 
-async function PersonalSummary({ currentMonth, category }: { currentMonth: string, category?: string }) {
+async function PersonalSummarySection({ currentMonth, category }: { currentMonth: string, category?: string }) {
   const myExpenses = await getPersonalExpenses(currentMonth, category) ?? [];
   const myTotalAmount = myExpenses?.reduce((sum: number, exp: any) => sum + exp.amount, 0);
 
@@ -81,5 +74,13 @@ async function PersonalSummary({ currentMonth, category }: { currentMonth: strin
     <p style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-text-main)' }}>
       ¥{myTotalAmount.toLocaleString()}
     </p>
+  );
+}
+
+function AuthRedirect() {
+  return (
+    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+      <h1 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>ログインしていません。</h1>
+    </div>
   );
 }
