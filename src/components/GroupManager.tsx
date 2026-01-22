@@ -12,11 +12,12 @@ export function GroupManager() {
   const [joinState, joinAction, isJoinPending] = useActionState(joinGroup, null);
 
   return (
-    <Card className="max-w-md mx-auto">
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', justifyContent: 'center' }}>
-        <button 
+    <Card>
+      < div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', justifyContent: 'center' }
+      }>
+        <button
           onClick={() => setMode('create')}
-          style={{ 
+          style={{
             fontWeight: mode === 'create' ? 700 : 400,
             borderBottom: mode === 'create' ? '2px solid var(--color-primary)' : 'none',
             paddingBottom: '0.25rem',
@@ -25,9 +26,9 @@ export function GroupManager() {
         >
           グループ作成
         </button>
-        <button 
+        <button
           onClick={() => setMode('join')}
-          style={{ 
+          style={{
             fontWeight: mode === 'join' ? 700 : 400,
             borderBottom: mode === 'join' ? '2px solid var(--color-primary)' : 'none',
             paddingBottom: '0.25rem',
@@ -36,14 +37,14 @@ export function GroupManager() {
         >
           グループに参加
         </button>
-      </div>
+      </div >
 
       {mode === 'create' ? (
         <form action={createAction} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <Input 
-            label="グループ名" 
-            name="name" 
-            placeholder="例: シェアハウス" 
+          <Input
+            label="グループ名"
+            name="name"
+            placeholder="例: シェアハウス"
             required
           />
           {createState?.error && <p style={{ color: 'var(--color-accent)' }}>{createState.error}</p>}
@@ -51,16 +52,16 @@ export function GroupManager() {
         </form>
       ) : (
         <form action={joinAction} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <Input 
-            label="招待コード" 
-            name="inviteCode" 
-            placeholder="6桁のコード" 
+          <Input
+            label="招待コード"
+            name="inviteCode"
+            placeholder="6桁のコード"
             required
           />
           {joinState?.error && <p style={{ color: 'var(--color-accent)' }}>{joinState.error}</p>}
           <Button type="submit" isLoading={isJoinPending}>参加する</Button>
         </form>
       )}
-    </Card>
+    </Card >
   );
 }
