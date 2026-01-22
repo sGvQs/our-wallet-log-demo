@@ -1,13 +1,11 @@
 import { type Metadata } from 'next'
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
 } from '@clerk/nextjs'
-import { Geist, Geist_Mono, Zen_Maru_Gothic } from 'next/font/google'
+import { M_PLUS_1p, M_PLUS_Rounded_1c } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
 import { DashboardNav } from '@/components/DashboardNav'
@@ -17,21 +15,11 @@ import { MonthProvider } from '@/context/MonthContext'
 import { Suspense } from 'react'
 import { TypingAnimation } from "@/components/ui/typing-animation"
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const primaryFont = M_PLUS_Rounded_1c({
+  weight: ['300', '400', '500'],
   subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
-
-const zenMaruGothic = Zen_Maru_Gothic({
-  weight: ['300', '400', '500', '700'],
-  subsets: ['latin'],
-  variable: '--font-zen-maru',
-})
+  variable: '--font-primary',
+});
 
 export const metadata: Metadata = {
   title: 'Our Wallet Log',
@@ -47,7 +35,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${zenMaruGothic.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className={`${primaryFont.variable} antialiased`}>
           <header>
             <SignedOut>
               {children}
