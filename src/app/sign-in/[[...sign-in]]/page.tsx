@@ -31,7 +31,6 @@ export default function Page() {
         <HyperText>LOG</HyperText>
       </div>
       <h2>同棲やシェアハウス用の家計簿アプリ</h2>
-
     </div>
     <RetroGrid angle={80} cellSize={10} />
     <SignIn />

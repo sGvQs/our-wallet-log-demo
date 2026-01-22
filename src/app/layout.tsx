@@ -58,7 +58,9 @@ export default function RootLayout({
                     <main className="app-main">
                       <MonthNav />
                       <div className="main-content">
-                        {children}
+                        <Suspense fallback={<div>Loading...</div>}>
+                          {children}
+                        </Suspense>
                       </div>
                     </main>
                   </div>
