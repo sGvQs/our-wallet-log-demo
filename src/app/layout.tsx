@@ -5,7 +5,7 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs'
-import { M_PLUS_1p, M_PLUS_Rounded_1c } from 'next/font/google'
+import { M_PLUS_Rounded_1c } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
 import { DashboardNav } from '@/components/DashboardNav'
@@ -46,7 +46,7 @@ export default function RootLayout({
                   <div className="app-container">
                     <header className="app-header">
                       <Link href="/personal" className="app-title">
-                        <TypingAnimation words={["わたしたちの家計簿 💴", "Our Wallet Log 💵"]}
+                        <TypingAnimation words={["アワーウォレットログ 💴", "Our Wallet Log 💵"]}
                           loop
                           blinkCursor={true}
                           pauseDelay={5000}
