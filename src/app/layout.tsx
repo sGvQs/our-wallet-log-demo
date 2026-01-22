@@ -7,7 +7,7 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Zen_Maru_Gothic } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
 import { DashboardNav } from '@/components/DashboardNav'
@@ -26,6 +26,12 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
+const zenMaruGothic = Zen_Maru_Gothic({
+  weight: ['300', '400', '500', '700'],
+  subsets: ['latin'],
+  variable: '--font-zen-maru',
+})
+
 export const metadata: Metadata = {
   title: 'Our Wallet Log',
   description: 'Shared wallet expense tracking',
@@ -40,7 +46,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className={`${geistSans.variable} ${geistMono.variable} ${zenMaruGothic.variable} antialiased`}>
           <header className="flex justify-end items-center p-4 gap-4 h-16">
             <SignedOut>
               {children}

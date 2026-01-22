@@ -1,46 +1,52 @@
 :root {
-  /* Colors - Notion-like Palette */
-  /* Main Backgrounds */
-  --bg-main: #FFFFFF;
-  --bg-sidebar: #F7F7F5;
-  --bg-hover: #EFEFEF;
-  --bg-active: #E5E5E5;
+  /* Colors - Muted Warm Palette (Refined) */
+  /* Main Backgrounds - Very Light Off-White */
+  --bg-main: #FFFEFA;
+  /* Warmer, lighter than before */
+  --bg-sidebar: #FAF7F2;
+  /* Soft warm gray/beige */
+  --bg-hover: #F2EFE9;
+  --bg-active: #EBE7E0;
 
-  /* Text */
-  --text-main: #37352F;
-  --text-muted: #787774;
-  --text-placeholder: #9B9A97;
+  /* Text - Warm & Soft */
+  --text-main: #5F5B54;
+  --text-muted: #96938C;
+  --text-placeholder: #B8B5B0;
 
   /* Borders */
-  --border-default: #E9E9E8;
-  --border-active: #37352F;
+  --border-default: #EBE7E0;
+  --border-active: #E27D60;
+  /* Terracotta highlight */
 
-  /* Accents */
-  --accent-blue: #2EAADC;
-  --accent-red: #EB5757;
-  --accent-orange: #D9730D;
-  --accent-green: #448361;
+  /* Accents - Earthy & Terracotta */
+  --accent-terracotta: #E27D60;
+  /* The requested "gentle terracotta" */
+  --accent-blue: #6B8FA3;
+  --accent-red: #D67C7C;
+  --accent-orange: #E09F6D;
+  --accent-green: #95B09D;
 
   /* Semantic Mappings */
   --color-bg-app: var(--bg-main);
-  --color-bg-surface: var(--bg-main);       /* Cards blend with background in Notion */
+  --color-bg-surface: var(--bg-main);
   --color-bg-surface-hover: var(--bg-hover);
-  
+
   --color-text-main: var(--text-main);
   --color-text-muted: var(--text-muted);
-  
-  --color-border: var(--border-default);
-  
-  --color-primary: #37352F; /* Black/Dark Grey is often primary in Notion */
-  --color-primary-light: #F7F7F5;
-  --color-secondary: var(--accent-blue);
-  --color-accent: var(--accent-red);
 
-  /* Shadows - Minimal to None */
+  --color-border: var(--border-default);
+
+  --color-primary: #5F5B54;
+  --color-primary-light: #FAF7F2;
+  --color-secondary: var(--accent-terracotta);
+  /* Use Terracotta as secondary main color */
+  --color-accent: var(--accent-terracotta);
+
+  /* Shadows - Very Soft */
   --shadow-sm: none;
-  --shadow-md: 0 1px 2px rgba(15, 15, 15, 0.05); /* Very subtle if needed */
-  --shadow-lg: 0 4px 8px rgba(15, 15, 15, 0.05);
-  --shadow-popup: 0 0 0 1px rgba(15,15,15, 0.05), 0 3px 6px rgba(15,15,15, 0.1);
+  --shadow-md: 0 4px 12px rgba(95, 91, 84, 0.05);
+  --shadow-lg: 0 12px 24px rgba(95, 91, 84, 0.08);
+  --shadow-popup: 0 0 0 1px rgba(95, 91, 84, 0.03), 0 8px 20px rgba(95, 91, 84, 0.1);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -52,28 +58,33 @@
   --space-12: 3rem;
 
   /* Radius */
-  --radius-sm: 4px; /* Flatter radius */
-  --radius-md: 6px;
-  --radius-lg: 8px;
+  --radius-sm: 6px;
+  /* Rounder */
+  --radius-md: 12px;
+  /* Rounder */
+  --radius-lg: 20px;
+  /* Much rounder for a "cute" feel */
   --radius-full: 9999px;
 
   /* Transitions */
-  --transition-base: 100ms ease-out; /* Snappier transitions */
+  --transition-base: 200ms ease;
+  /* Slower, gentler transition */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Notion Dark Mode */
-    --bg-main: #191919;
-    --bg-sidebar: #202020;
-    --bg-hover: #2F2F2F;
-    --bg-active: #373737;
+    /* Muted Warm Dark Mode */
+    --bg-main: #2B2926;
+    /* Warm dark brown-gray */
+    --bg-sidebar: #33302D;
+    --bg-hover: #3E3B37;
+    --bg-active: #4A4642;
 
-    --text-main: #D4D4D4;
-    --text-muted: #9B9A97;
-    --border-default: #2F2F2F;
-    
-    --color-primary: #D4D4D4;
-    --color-primary-light: #2F2F2F;
+    --text-main: #E6E3DE;
+    --text-muted: #ABA8A3;
+    --border-default: #4A4642;
+
+    --color-primary: #E6E3DE;
+    --color-primary-light: #33302D;
   }
 }
