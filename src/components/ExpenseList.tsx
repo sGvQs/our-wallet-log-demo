@@ -29,6 +29,24 @@ export function ExpenseList({ expenses, currentUserId }: { expenses: any[], curr
           <Card key={expense.id} className="expense-card">
             <div className="expense-content">
               <div className="expense-info">
+                {expense.payer && (
+                  <div style={{
+                    width: '2rem',
+                    height: '2rem',
+                    borderRadius: '50%',
+                    border: "1px solid var(--color-border)",
+                    background: 'var(--color-bg-app)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--color-text-muted)',
+                    fontWeight: 700,
+                    fontSize: '0.8rem',
+                    flexShrink: 0
+                  }}>
+                    {expense.payer.name ? expense.payer.name[0] : '?'}
+                  </div>
+                )}
                 <div
                   className="expense-category-badge"
                   style={{
