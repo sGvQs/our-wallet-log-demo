@@ -1,34 +1,38 @@
 :root {
-  /* Colors - Muted Warm Palette (Refined) */
-  /* Main Backgrounds - Very Light Off-White */
-  --bg-main: #FFFEFA;
-  /* Warmer, lighter than before */
-  --bg-sidebar: #FAF7F2;
-  /* Soft warm gray/beige */
-  --bg-hover: #F2EFE9;
-  --bg-active: #EBE7E0;
+  /* Colors - Claude Code Inspired (Warm Paper) */
+  /* Main Backgrounds */
+  /* --bg-main: #FAF9F5; */
+  /* --bg-main: #edeae1; */
+  --bg-main: #fdfdf8;
+  /* Premium Paper Off-White */
+  /* --bg-sidebar: #f5f5f5; */
+  --bg-sidebar: #edeae1;
+  --bg-hover: #F0EEE6;
+  /* Warm Tan/Gray Hover */
+  --bg-active: #E8E6DC;
 
-  /* Text - Warm & Soft */
-  --text-main: #5F5B54;
-  --text-muted: #96938C;
-  --text-placeholder: #B8B5B0;
+  /* Text - Warm Charcoal */
+  --text-main: #141413;
+  /* Soft Charcoal */
+  --text-muted: #5E5D59;
+  /* Warm Gray */
+  --text-placeholder: #9CA3AF;
 
   /* Borders */
-  --border-default: #EBE7E0;
-  --border-active: #E27D60;
-  /* Terracotta highlight */
+  --border-default: #E8E6DC;
+  /* Warm Tan Gray */
+  --border-active: #D97757;
 
-  /* Accents - Earthy & Terracotta */
-  --accent-terracotta: #E27D60;
-  /* The requested "gentle terracotta" */
-  --accent-blue: #6B8FA3;
-  --accent-red: #D67C7C;
-  --accent-orange: #E09F6D;
-  --accent-green: #95B09D;
+  /* Accents */
+  --accent-primary: #D97757;
+  /* Claude Terracotta */
+  --accent-secondary: #141413;
+  /* Dark Accent */
+  --accent-terracotta: #D97757;
 
   /* Semantic Mappings */
   --color-bg-app: var(--bg-main);
-  --color-bg-surface: var(--bg-main);
+  --color-bg-surface: #FFFFFF;
   --color-bg-surface-hover: var(--bg-hover);
 
   --color-text-main: var(--text-main);
@@ -36,17 +40,17 @@
 
   --color-border: var(--border-default);
 
-  --color-primary: #5F5B54;
-  --color-primary-light: #FAF7F2;
+  /* --color-primary: #141413; */
+  --color-primary: #cc7b5e;
+  --color-primary-light: #FAF9F5;
   --color-secondary: var(--accent-terracotta);
-  /* Use Terracotta as secondary main color */
-  --color-accent: var(--accent-terracotta);
+  --color-accent: var(--accent-primary);
 
-  /* Shadows - Very Soft */
-  --shadow-sm: none;
-  --shadow-md: 0 4px 12px rgba(95, 91, 84, 0.05);
-  --shadow-lg: 0 12px 24px rgba(95, 91, 84, 0.08);
-  --shadow-popup: 0 0 0 1px rgba(95, 91, 84, 0.03), 0 8px 20px rgba(95, 91, 84, 0.1);
+  /* Shadows - Distinct Floating Cards */
+  --shadow-sm: 0 1px 2px rgba(20, 20, 19, 0.04);
+  --shadow-md: 0 4px 12px rgba(20, 20, 19, 0.06);
+  --shadow-lg: 0 12px 24px rgba(20, 20, 19, 0.08);
+  --shadow-popup: 0 0 0 1px rgba(20, 20, 19, 0.04), 0 10px 30px rgba(20, 20, 19, 0.12);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -59,32 +63,28 @@
 
   /* Radius */
   --radius-sm: 6px;
-  /* Rounder */
   --radius-md: 12px;
-  /* Rounder */
   --radius-lg: 20px;
-  /* Much rounder for a "cute" feel */
   --radius-full: 9999px;
 
   /* Transitions */
-  --transition-base: 200ms ease;
-  /* Slower, gentler transition */
+  --transition-base: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Snappy/Elastic */
 }
 
+/* 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Muted Warm Dark Mode */
-    --bg-main: #2B2926;
-    /* Warm dark brown-gray */
-    --bg-sidebar: #33302D;
-    --bg-hover: #3E3B37;
-    --bg-active: #4A4642;
+    --bg-main: #1A1918;
+    --bg-sidebar: #222120;
+    --bg-hover: #2C2B2A;
+    --bg-active: #363534;
 
-    --text-main: #E6E3DE;
-    --text-muted: #ABA8A3;
-    --border-default: #4A4642;
+    --text-main: #E6E5E3;
+    --text-muted: #9E9D99;
+    --border-default: #363534;
 
-    --color-primary: #E6E3DE;
-    --color-primary-light: #33302D;
+    --color-primary: #E6E5E3;
+    --color-primary-light: #222120;
   }
-}
+} */

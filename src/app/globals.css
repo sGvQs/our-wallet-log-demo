@@ -14,10 +14,17 @@ html {
 }
 
 body {
-  background-color: var(--color-bg-app);
+  background-color: var(--bg-main);
+  /* Flim-style Graph Paper Grid - Refined for "Paper" Look */
+  /* background-image:
+    linear-gradient(rgba(232, 230, 220, 0.5) .5px, transparent .5px),
+    linear-gradient(90deg, rgba(232, 230, 220, 0.5) .5px, transparent .5px); */
+  background-size: 40px 40px;
+  background-position: center top;
+
   color: var(--color-text-main);
-  /* Cute/Round font as requested */
-  font-family: var(--font-zen-maru), ui-sans-serif, system-ui, sans-serif;
+  /* Flim uses clean sans - reusing Geist */
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   min-height: 100vh;
   line-height: 1.5;
 }
@@ -394,10 +401,6 @@ button {
   cursor: pointer;
   font-weight: 500;
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, var(--color-text-muted) 50%), linear-gradient(135deg, var(--color-text-muted) 50%, transparent 50%);
-  background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
   padding-right: 2.5rem;
   width: 100%;
 }
