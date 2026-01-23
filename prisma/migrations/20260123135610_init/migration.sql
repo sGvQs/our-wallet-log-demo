@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "ExpenseCategory" AS ENUM ('ALL', 'FOOD', 'HOUSING', 'UTILITIES', 'DAILY', 'TRAVEL', 'ENTERTAINMENT', 'OTHER');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -55,7 +58,7 @@ CREATE TABLE "Expense" (
     "amount" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "category" TEXT NOT NULL DEFAULT 'OTHER',
+    "category" "ExpenseCategory" NOT NULL DEFAULT 'OTHER',
     "userId" INTEGER NOT NULL,
     "groupId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -83,6 +86,12 @@ CREATE UNIQUE INDEX "UserIdp_userId_key" ON "UserIdp"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Group_inviteCode_key" ON "Group"("inviteCode");
+
+-- CreateIndex
+CREATE INDEX "Expense_groupId_idx" ON "Expense"("groupId");
+
+-- CreateIndex
+CREATE INDEX "Expense_userId_date_idx" ON "Expense"("userId", "date");
 
 -- CreateIndex
 CREATE INDEX "_GroupToUser_B_index" ON "_GroupToUser"("B");

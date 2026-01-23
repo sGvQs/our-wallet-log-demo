@@ -1,10 +1,10 @@
-import { defineConfig, env } from 'prisma/config';
+import { defineConfig } from 'prisma/config';
 
-const isSQLite = process.env.DATABASE_URL?.startsWith('file:');
-
+// Next.js automatically loads .env files, so we can use process.env directly
+// For Prisma CLI commands, ensure DATABASE_URL is set in your environment
 export default defineConfig({
-  schema: isSQLite ? "prisma/sqlite/schema.prisma" : "prisma/schema.prisma",
+  schema: 'prisma/schema.prisma',
   datasource: {
-    url: isSQLite ? process.env.DATABASE_URL : (process.env.DIRECT_URL),
+    url: process.env.DATABASE_URL!,
   },
 });

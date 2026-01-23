@@ -1,23 +1,17 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaNeon } from '@prisma/adapter-neon'
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
-import dotenv from 'dotenv'
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-dotenv.config()
-const connectionString = `${process.env.DATABASE_URL}`
+const connectionString = process.env.DATABASE_URL;
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
-
-let adapter: PrismaNeon | PrismaBetterSqlite3;
-
-
-if (connectionString.startsWith('postgres') || connectionString.startsWith('postgresql')) {
-  adapter = new PrismaNeon({ connectionString });
-} else {
-  // For SQLite, use better-sqlite3 adapter
-  adapter = new PrismaBetterSqlite3({ url: 'dev.db' });
+if (!connectionString) {
+  throw new Error('DATABASE_URL environment variable is not set');
 }
 
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 export const prisma =
   globalForPrisma.prisma ||
