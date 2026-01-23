@@ -55,6 +55,55 @@ export async function addExpense(prevState: any, formData: FormData) {
   return { success: true };
 }
 
+export async function updateExpense(expenseId: string, formData: FormData) {
+  const user = await getAuthenticatedUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  // Verify ownership (only the owner can edit)
+  const expense = await prisma.expense.findUnique({
+    where: { id: expenseId }
+  });
+
+  if (!expense) return { error: '支出が見つかりません' };
+
+  if (expense.userId !== user.id) {
+    return { error: '権限がありません' };
+  }
+
+  const amount = parseInt(formData.get('amount') as string);
+  const description = formData.get('description') as string;
+  const year = parseInt(formData.get('year') as string);
+  const month = parseInt(formData.get('month') as string);
+  const day = parseInt(formData.get('day') as string);
+  const category = formData.get('category') as ExpenseCategory;
+
+  if (!amount || isNaN(amount)) return { error: '金額を正しく入力してください' };
+  if (!description) return { error: '内容を入力してください' };
+
+  let recordDate = new Date();
+  if (year && month && day) {
+    recordDate = new Date(year, month - 1, day);
+  }
+
+  try {
+    await prisma.expense.update({
+      where: { id: expenseId },
+      data: {
+        amount,
+        description,
+        date: recordDate,
+        category,
+      }
+    });
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'Unknown error' };
+  }
+
+  revalidatePath('/personal');
+  revalidatePath('/group');
+  return { success: true };
+}
+
 export async function deleteExpense(expenseId: string) {
   const user = await getAuthenticatedUser();
   if (!user) return { error: 'Not authenticated' };
@@ -72,5 +121,6 @@ export async function deleteExpense(expenseId: string) {
 
   await prisma.expense.delete({ where: { id: expenseId } });
   revalidatePath('/personal');
+  revalidatePath('/group');
   return { success: true };
 }

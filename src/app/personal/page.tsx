@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import { getCurrentUser, getPersonalExpenses } from '@/backend/services/data';
 import { Card } from '@/components/ui/Card';
-import { AddExpenseForm } from '@/components/AddExpenseForm';
 import { ExpenseList } from '@/components/ExpenseList';
 import { FilterBar } from '@/components/FilterBar';
 import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
+import { ExpenseActions } from '@/components/expense';
 
 export default async function PersonalDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
@@ -12,13 +12,8 @@ export default async function PersonalDashboardPage(props: { searchParams: Promi
 
   return (
     <div className="dashboard-grid">
-      {/* Main Content: Add Expense & My List */}
+      {/* Main Content: My List */}
       <div className="dashboard-main">
-        <div style={{ marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: '1rem' }}>あたらしく記録する</h2>
-          <AddExpenseForm />
-        </div>
-
         <div className="dashboard-header">
           <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>自分の支出一覧</h2>
           <FilterBar />
@@ -45,6 +40,9 @@ export default async function PersonalDashboardPage(props: { searchParams: Promi
           )}
         </Card>
       </div>
+
+      {/* Floating Action Button + Modal */}
+      <ExpenseActions />
     </div>
   );
 }

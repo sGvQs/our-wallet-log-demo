@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card';
 import { ExpenseList } from '@/components/ExpenseList';
 import { FilterBar } from '@/components/FilterBar';
 import { ExpenseListSkeleton, Skeleton, SidebarSkeleton } from '@/components/Skeleton';
+import { ExpenseActions } from '@/components/expense';
 
 export default async function GroupDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
@@ -30,6 +31,9 @@ export default async function GroupDashboardPage(props: { searchParams: Promise<
       <Suspense fallback={<SidebarSkeleton />}>
         <GroupSidebarSection currentMonth={currentMonth} category={searchParams.category} />
       </Suspense>
+
+      {/* Floating Action Button + Modal */}
+      <ExpenseActions />
     </div>
   );
 }
