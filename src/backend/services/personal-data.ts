@@ -51,16 +51,30 @@ export const getPersonalBudget = cache(async (year: number, month: number) => {
   return budgets;
 });
 
-// Get all budgets for a year
-export const getPersonalBudgetsForYear = cache(async (year: number) => {
+// Get all budgets for a year with optional month and category filter
+export const getPersonalBudgetsForYear = cache(async (
+  year: number,
+  month?: number,
+  category?: string
+) => {
   const user = await getAuthenticatedUser();
   if (!user) return null;
 
+  const where: any = {
+    userId: user.id,
+    targetYear: year,
+  };
+
+  if (month) {
+    where.targetMonth = month;
+  }
+
+  if (category && category !== 'ALL') {
+    where.category = category as PersonalExpenseCategory;
+  }
+
   const budgets = await prisma.personalBudget.findMany({
-    where: {
-      userId: user.id,
-      targetYear: year,
-    },
+    where,
     orderBy: [
       { targetMonth: 'asc' },
       { category: 'asc' },

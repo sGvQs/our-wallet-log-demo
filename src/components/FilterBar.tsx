@@ -3,18 +3,7 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useMonth } from '@/context/MonthContext';
 import { ExpenseCategory } from '@/types/prisma';
-
-
-export const CATEGORIES: Record<ExpenseCategory, string> = {
-  ALL: 'すべて',
-  FOOD: '食費',
-  HOUSING: '家賃',
-  UTILITIES: '光熱費',
-  DAILY: '日用品',
-  TRAVEL: '旅行費',
-  ENTERTAINMENT: 'お楽しみ費',
-  OTHER: 'その他',
-};
+import { $Enums } from '@prisma/client';
 
 export const CATEGORY_COLORS: Record<ExpenseCategory, string> = {
   ALL: 'var(--color-text-main)',
@@ -27,7 +16,9 @@ export const CATEGORY_COLORS: Record<ExpenseCategory, string> = {
   OTHER: '#8D99AE',
 };
 
-export function FilterBar() {
+export function FilterBar(props: {
+  category: Record<$Enums.PersonalExpenseCategory, string> | Record<$Enums.ExpenseCategory, string>
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -55,7 +46,7 @@ export function FilterBar() {
           onChange={handleCategoryChange}
           className="filter-select"
         >
-          {Object.entries(CATEGORIES).map(([key, label]) => (
+          {Object.entries(props.category).map(([key, label]) => (
             <option key={key} value={key}>
               {label}
             </option>

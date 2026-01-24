@@ -43,14 +43,16 @@ export default function RootLayout({
               <MonthProvider>
                 <div className="app-container">
                   <header className="app-header">
-                    <ModeSwitch />
-                    <Link href="/family/expenses" className="app-title">
-                      <TypingAnimation words={["アワーウォレットログ 💴", "Our Wallet Log 💵"]}
-                        loop
-                        blinkCursor={true}
-                        pauseDelay={5000}
-                      />
-                    </Link>
+                    <div>
+                      <h1 className="app-title">
+                        <TypingAnimation words={["アワーウォレットログ 💴", "Our Wallet Log 💵"]}
+                          loop
+                          blinkCursor={true}
+                          pauseDelay={5000}
+                        />
+                      </h1>
+                      <ModeSwitch />
+                    </div>
                     <UserButton />
                   </header>
                   <Suspense fallback={<div>Loading...</div>}>

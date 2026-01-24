@@ -21,14 +21,14 @@ export function PersonalNav() {
   return (
     <div className="dashboard-nav-container personal-nav">
       <div className="dashboard-nav-content">
-        <Link 
+        {/* <Link 
             href={`/personal/dashboard?month=${month}`} 
             className="dashboard-nav-link"
             style={linkStyle(isDashboard)}
         >
             <LayoutDashboard size={16} style={{ marginRight: '0.25rem' }} />
             ダッシュボード
-        </Link>
+        </Link> */}
         <Link 
             href={`/personal/expenses?month=${month}`} 
             className="dashboard-nav-link"

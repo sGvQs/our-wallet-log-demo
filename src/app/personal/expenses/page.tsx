@@ -5,6 +5,8 @@ import { PersonalExpenseList } from '@/components/personal/PersonalExpenseList';
 import { PersonalFilterBar } from '@/components/personal/PersonalFilterBar';
 import { PersonalExpenseActions } from '@/components/personal/PersonalExpenseActions';
 import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
+import { FilterBar } from '@/components/FilterBar';
+import { PERSONAL_CATEGORIES } from '@/types/category';
 
 export default async function PersonalExpensesPage(
   props: { searchParams: Promise<{ month?: string; category?: string }> }
@@ -18,7 +20,7 @@ export default async function PersonalExpensesPage(
       <div className="dashboard-main">
         <div className="dashboard-header">
           <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>個人用支出一覧</h2>
-          <PersonalFilterBar />
+          <FilterBar category={PERSONAL_CATEGORIES} />
         </div>
 
         <Suspense fallback={<ExpenseListSkeleton />}>

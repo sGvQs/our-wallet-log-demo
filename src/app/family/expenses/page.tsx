@@ -5,6 +5,7 @@ import { ExpenseList } from '@/components/ExpenseList';
 import { FilterBar } from '@/components/FilterBar';
 import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
 import { ExpenseActions } from '@/components/expense';
+import { FAMILY_CATEGORIES } from '@/types/category';
 
 export default async function FamilyExpensesPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
@@ -16,7 +17,7 @@ export default async function FamilyExpensesPage(props: { searchParams: Promise<
       <div className="dashboard-main">
         <div className="dashboard-header">
           <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>自分の支出一覧</h2>
-          <FilterBar />
+          <FilterBar category={FAMILY_CATEGORIES} />
         </div>
 
         <Suspense fallback={<ExpenseListSkeleton />}>

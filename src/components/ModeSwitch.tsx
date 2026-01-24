@@ -15,6 +15,7 @@ export function ModeSwitch() {
   return (
     <div 
       style={{
+        maxWidth: "161px",
         display: 'flex',
         gap: '0.25rem',
         padding: '0.25rem',

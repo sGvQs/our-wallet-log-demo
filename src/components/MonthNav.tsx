@@ -11,6 +11,7 @@ export function MonthNav() {
   const { month: activeMonth, setMonth } = useMonth();
   
   if (pathname.includes('/settings')) return null;
+  if (pathname.includes('/budget')) return null;
 
   // Default to current month if not specified
   const now = new Date();
@@ -40,7 +41,7 @@ export function MonthNav() {
         const isActive = activeMonth === month.value;
         // Construct new params: keep category, change month
         const newParams = new URLSearchParams(searchParams);
-        newParams.set('month', month.value);
+        newParams.set('yearAndMonth', month.value);
 
         return (
           <button

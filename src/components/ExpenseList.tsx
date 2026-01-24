@@ -3,11 +3,12 @@
 import { deleteExpense } from '@/backend/actions/expenses';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { CATEGORIES, CATEGORY_COLORS } from '@/components/FilterBar';
+import { CATEGORY_COLORS } from '@/components/FilterBar';
 import { ResponsiveExpenseDialog } from '@/components/expense';
 import { useState, useTransition, useOptimistic } from 'react';
 import { Pencil } from 'lucide-react';
 import type { Expense } from '@/types/prisma';
+import { FAMILY_CATEGORIES } from '@/types/category';
 
 type ExpenseWithPayer = Expense & {
   payer?: { id: number; name: string | null };
@@ -72,7 +73,7 @@ export function ExpenseList({
             CATEGORY_COLORS[expense.category as keyof typeof CATEGORY_COLORS] ||
             CATEGORY_COLORS.OTHER;
           const categoryLabel =
-            CATEGORIES[expense.category as keyof typeof CATEGORIES] || 'その他';
+            FAMILY_CATEGORIES[expense.category as keyof typeof FAMILY_CATEGORIES] || 'その他';
           const canEdit =
             expense.payerId === currentUserId ||
             expense.userId === currentUserId;

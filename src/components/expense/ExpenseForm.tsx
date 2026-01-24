@@ -3,7 +3,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
-import { CATEGORIES } from '@/components/FilterBar';
 import {
   expenseFormSchema,
   type ExpenseFormData,
@@ -12,6 +11,7 @@ import {
 import { addExpense, updateExpense } from '@/backend/actions/expenses';
 import type { Expense } from '@/types/prisma';
 import { Loader2 } from 'lucide-react';
+import { FAMILY_CATEGORIES } from '@/types/category';
 
 export type ExpenseFormProps = {
   mode: 'create' | 'edit';
@@ -222,7 +222,7 @@ export function ExpenseForm({
           onFocus={handleFocus as any}
           onBlur={handleBlur as any}
         >
-          {Object.entries(CATEGORIES)
+          {Object.entries(FAMILY_CATEGORIES)
             .filter(([key]) => key !== 'ALL')
             .map(([key, label]) => (
               <option key={key} value={key}>
