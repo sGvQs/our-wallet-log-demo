@@ -70,7 +70,8 @@ model PastGroup {
 model Expense {
   id          String   @id @default(uuid())
   amount      Int
-  description String
+  description String?
+  shop        String?
   date        DateTime @default(now())
   category    ExpenseCategory @default(OTHER)
   userId      Int      

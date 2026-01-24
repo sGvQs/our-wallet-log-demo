@@ -10,7 +10,8 @@ export async function addExpense(prevState: any, formData: FormData) {
   if (!user) return { error: 'Not authenticated' };
 
   const amount = parseInt(formData.get('amount') as string);
-  const description = formData.get('description') as string;
+  const description = formData.get('description') as string | null;
+  const shop = formData.get("shop") as string | null;
   const dateStr = formData.get('date') as string;
   const year = parseInt(formData.get('year') as string);
   const month = parseInt(formData.get('month') as string);
@@ -27,7 +28,6 @@ export async function addExpense(prevState: any, formData: FormData) {
   const category = formData.get('category') as ExpenseCategory;
 
   if (!amount || isNaN(amount)) return { error: '金額を正しく入力してください' };
-  if (!description) return { error: '内容を入力してください' };
 
   // Note: Expense is now linked to Group if the user is in one.
   const userWithGroups = await prisma.user.findUnique({
@@ -41,6 +41,7 @@ export async function addExpense(prevState: any, formData: FormData) {
       data: {
         amount,
         description,
+        shop,
         date: recordDate,
         category,
         userId: user.id, // Int ID
@@ -71,14 +72,14 @@ export async function updateExpense(expenseId: string, formData: FormData) {
   }
 
   const amount = parseInt(formData.get('amount') as string);
-  const description = formData.get('description') as string;
+  const description = formData.get('description') as string | null;
+  const shop = formData.get("shop") as string | null;
   const year = parseInt(formData.get('year') as string);
   const month = parseInt(formData.get('month') as string);
   const day = parseInt(formData.get('day') as string);
   const category = formData.get('category') as ExpenseCategory;
 
   if (!amount || isNaN(amount)) return { error: '金額を正しく入力してください' };
-  if (!description) return { error: '内容を入力してください' };
 
   let recordDate = new Date();
   if (year && month && day) {
@@ -91,6 +92,7 @@ export async function updateExpense(expenseId: string, formData: FormData) {
       data: {
         amount,
         description,
+        shop,
         date: recordDate,
         category,
       }

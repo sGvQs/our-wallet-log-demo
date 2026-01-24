@@ -21,8 +21,10 @@ export const expenseFormSchema = z.object({
     .max(100000000, '金額が大きすぎます'),
   description: z
     .string()
-    .min(1, '内容を入力してください')
-    .max(100, '内容は100文字以内で入力してください'),
+    .max(10, '内容は10文字以内で入力してください'),
+  shop: z
+    .string()
+    .max(10, '店名は10文字以内で入力してください'),
   category: ExpenseCategoryEnum,
   year: z.number().min(2020).max(2100),
   month: z.number().min(1).max(12),
@@ -35,6 +37,7 @@ export type ExpenseFormData = z.infer<typeof expenseFormSchema>;
 export const defaultExpenseFormValues: ExpenseFormData = {
   amount: 0,
   description: '',
+  shop: '',
   category: 'FOOD',
   year: new Date().getFullYear(),
   month: new Date().getMonth() + 1,

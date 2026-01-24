@@ -110,7 +110,12 @@ export function ExpenseList({
                   >
                     {categoryLabel}
                   </div>
-                  <div className="expense-description">{expense.description}</div>
+                  {expense.shop &&
+                    <div className="expense-shop">{expense.shop}</div> 
+                  }
+                  {expense.description &&
+                    <div className="expense-description">{expense.description}</div>
+                  }
                 </div>
                 <div className="expense-actions">
                   <div className="expense-amount">

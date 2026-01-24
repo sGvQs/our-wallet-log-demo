@@ -81,7 +81,8 @@ export function ExpenseForm({
     defaultValues: initialData
       ? {
           amount: initialData.amount,
-          description: initialData.description,
+          description: initialData.description ?? '',
+          shop: initialData.shop ?? '',
           category: initialData.category as ExpenseFormData['category'],
           year: new Date(initialData.date).getFullYear(),
           month: new Date(initialData.date).getMonth() + 1,
@@ -95,6 +96,7 @@ export function ExpenseForm({
       const formData = new FormData();
       formData.append('amount', data.amount.toString());
       formData.append('description', data.description);
+      formData.append("shop", data.shop);
       formData.append('category', data.category);
       formData.append('year', data.year.toString());
       formData.append('month', data.month.toString());
@@ -181,12 +183,27 @@ export function ExpenseForm({
         </div>
       </div>
 
+      {/* Shop */}
+      <div>
+        <label style={labelStyle}>お店の名前</label>
+        <input
+          {...register('shop')}
+          placeholder="お店の名前"
+          style={inputBaseStyle}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+        {errors.shop && (
+          <p style={errorStyle}>{errors.shop.message}</p>
+        )}
+      </div>
+
       {/* Description */}
       <div>
         <label style={labelStyle}>内容</label>
         <input
           {...register('description')}
-          placeholder="スーパーでの買い物"
+          placeholder="食料品"
           style={inputBaseStyle}
           onFocus={handleFocus}
           onBlur={handleBlur}

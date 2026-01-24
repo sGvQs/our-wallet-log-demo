@@ -336,6 +336,14 @@ button {
   text-align: center;
 }
 
+.expense-shop {
+  font-weight: 600;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .expense-description {
   font-weight: 600;
   font-size: 1rem;
@@ -446,6 +454,10 @@ button {
     /* Smaller badge on mobile */
     font-size: 0.7rem;
     padding: 0.15rem 0.25rem;
+  }
+
+  .expense-shop{
+    font-size: 0.95rem;
   }
 
   .expense-description {
