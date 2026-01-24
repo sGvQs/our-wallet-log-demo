@@ -26,6 +26,8 @@ model User {
   userIdp     UserIdp?
   expenses    Expense[]     
   groups        Group[]
+  personalExpenses PersonalExpense[]
+  personalBudgets PersonalBudget[]
   createdGroups CreatedGroup[]
   pastGroups    PastGroup[]
 }
@@ -82,4 +84,49 @@ model Expense {
   updatedAt   DateTime @updatedAt
   @@index([groupId])
   @@index([userId, date])
+}
+
+enum PersonalExpenseCategory {
+  ALL
+  FOOD           
+  HOUSING        
+  UTILITIES      
+  DAILY       
+  TRAVEL         
+  ENTERTAINMENT 
+  HOBBY         
+  CLOTHING      
+  BEAUTY         
+  MEDICAL      
+  EDUCATION     
+  GIFTS          
+  SUBSCRIPTION   
+  SAVINGS     
+  OTHER          
+}
+
+model PersonalExpense {
+  id          String          @id @default(uuid())
+  amount      Int
+  description String?
+  shop        String?
+  date        DateTime        @default(now())
+  category    PersonalExpenseCategory @default(OTHER)
+  userId      Int      
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  @@index([userId, date])
+}
+
+model PersonalBudget {
+  id        Int             @id @default(autoincrement())
+  userId      Int      
+  user        User     @relation(fields: [userId], references: [id])
+  amount    Int
+  targetMonth Int
+  targetYear Int
+  category  PersonalExpenseCategory
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

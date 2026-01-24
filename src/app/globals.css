@@ -687,6 +687,30 @@ button {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ============================================
+   Personal Mode Theme Override
+   ============================================ */
+.personal-mode {
+  --color-primary: var(--color-primary-personal);
+  --color-accent: var(--color-accent-personal);
+  position: relative;
+}
+
+.personal-mode .dashboard-nav-container {
+  background: var(--color-bg-personal);
+  border-bottom-color: var(--color-border-personal);
+}
+
+.personal-nav .dashboard-nav-link {
+  display: flex;
+  align-items: center;
+}
+
+/* Family Mode (default, no override needed) */
+.family-mode {
+  /* Uses default theme colors */
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

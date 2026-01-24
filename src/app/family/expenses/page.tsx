@@ -6,7 +6,7 @@ import { FilterBar } from '@/components/FilterBar';
 import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
 import { ExpenseActions } from '@/components/expense';
 
-export default async function PersonalDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
+export default async function FamilyExpensesPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
   const currentMonth = searchParams.month || new Date().toISOString().slice(0, 7);
 
