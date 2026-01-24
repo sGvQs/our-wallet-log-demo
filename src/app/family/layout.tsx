@@ -1,5 +1,5 @@
-import { FamilyNav } from '@/components/FamilyNav';
-import { MonthNav } from '@/components/MonthNav';
+import { FamilyNav } from '@/components/family';
+import { MonthNav } from '@/components/common';
 
 export default function FamilyLayout({
   children,

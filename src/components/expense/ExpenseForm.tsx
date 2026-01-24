@@ -11,7 +11,7 @@ import {
 import { addExpense, updateExpense } from '@/backend/actions/expenses';
 import type { Expense } from '@/types/prisma';
 import { Loader2 } from 'lucide-react';
-import { FAMILY_CATEGORIES } from '@/types/category';
+import { FAMILY_CATEGORIES } from '@/lib/constants/categories';
 
 export type ExpenseFormProps = {
   mode: 'create' | 'edit';

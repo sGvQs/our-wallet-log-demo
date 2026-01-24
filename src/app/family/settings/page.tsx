@@ -2,7 +2,7 @@ import { getGroupSettingsData } from '@/backend/services/data';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { createGroup, deleteGroup, joinGroup, leaveGroup } from '@/backend/actions/groups';
-import { GroupManager } from '@/components/GroupManager'; 
+import { GroupManager } from '@/components/family'; 
 import { DeleteGroupButton } from '@/components/settings/DeleteGroupButton'
 import { LeaveGroupButton } from '@/components/settings/LeaveGroupButton';
 import { JoinCreatedGroupButton } from '@/components/settings/JoinCreatedGroupButton';

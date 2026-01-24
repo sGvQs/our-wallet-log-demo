@@ -1,11 +1,10 @@
 import { Suspense } from 'react';
 import { getCurrentUser, getPersonalExpenses } from '@/backend/services/data';
 import { Card } from '@/components/ui/Card';
-import { ExpenseList } from '@/components/ExpenseList';
-import { FilterBar } from '@/components/FilterBar';
-import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
+import { ExpenseList } from '@/components/family';
+import { FilterBar, ExpenseListSkeleton, Skeleton } from '@/components/common';
 import { ExpenseActions } from '@/components/expense';
-import { FAMILY_CATEGORIES } from '@/types/category';
+import { FAMILY_CATEGORIES } from '@/lib/constants/categories';
 
 export default async function FamilyExpensesPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;

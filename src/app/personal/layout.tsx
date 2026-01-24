@@ -1,5 +1,5 @@
 import { PersonalNav } from '@/components/personal/PersonalNav';
-import { MonthNav } from '@/components/MonthNav';
+import { MonthNav } from '@/components/common';
 
 export default function PersonalLayout({
   children,

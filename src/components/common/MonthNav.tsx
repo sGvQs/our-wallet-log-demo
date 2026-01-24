@@ -1,15 +1,14 @@
 'use client';
 
-import Link from 'next/link';
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
 import { useMonth } from '@/context/MonthContext';
 
 export function MonthNav() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const router = useRouter();
   const { month: activeMonth, setMonth } = useMonth();
   
+  // Hide on settings and budget pages
   if (pathname.includes('/settings')) return null;
   if (pathname.includes('/budget')) return null;
 
@@ -34,14 +33,9 @@ export function MonthNav() {
       <div className="mobile-month-display">
         {activeMonth.split('-')[0]}年 {parseInt(activeMonth.split('-')[1])}月
       </div>
-      <h3 className="month-nav-title">
-        月を選択
-      </h3>
+      <h3 className="month-nav-title">月を選択</h3>
       {months.map((month) => {
         const isActive = activeMonth === month.value;
-        // Construct new params: keep category, change month
-        const newParams = new URLSearchParams(searchParams);
-        newParams.set('yearAndMonth', month.value);
 
         return (
           <button

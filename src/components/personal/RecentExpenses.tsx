@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@/components/ui/Card';
-import { PERSONAL_CATEGORIES } from '@/lib/constants/personal-categories';
+import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
 import { PersonalExpenseCategory } from '@prisma/client';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';

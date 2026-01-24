@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@/components/ui/Card';
-import { PERSONAL_CATEGORIES, CATEGORY_COLORS } from '@/lib/constants/personal-categories';
+import { PERSONAL_CATEGORIES, PERSONAL_CATEGORY_COLORS } from '@/lib/constants/categories';
 import { PersonalExpenseCategory } from '@prisma/client';
 
 interface CategorySummary {
@@ -62,7 +62,7 @@ export function CategoryBreakdown({
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {categorySummary.map((item) => {
           const percentage = totalExpenses > 0 ? (item.total / totalExpenses) * 100 : 0;
-          const color = CATEGORY_COLORS[item.category] || '#888';
+          const color = PERSONAL_CATEGORY_COLORS[item.category] || '#888';
 
           return (
             <div key={item.category}>

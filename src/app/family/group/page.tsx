@@ -2,11 +2,10 @@ import { Suspense } from 'react';
 import { getCurrentUser, getUserGroup, getGroupExpenses } from '@/backend/services/data';
 import { calculateSettlements } from '@/backend/services/settlement';
 import { Card } from '@/components/ui/Card';
-import { ExpenseList } from '@/components/ExpenseList';
-import { FilterBar } from '@/components/FilterBar';
-import { ExpenseListSkeleton, Skeleton, SidebarSkeleton } from '@/components/Skeleton';
+import { ExpenseList } from '@/components/family';
+import { FilterBar, ExpenseListSkeleton, Skeleton, SidebarSkeleton } from '@/components/common';
 import { ExpenseActions } from '@/components/expense';
-import { FAMILY_CATEGORIES } from '@/types/category';
+import { FAMILY_CATEGORIES } from '@/lib/constants/categories';
 
 export default async function GroupDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;

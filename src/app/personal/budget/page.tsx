@@ -4,15 +4,36 @@ import { Card } from '@/components/ui/Card';
 import { BudgetList } from '@/components/personal/BudgetList';
 import { BudgetFilterBar } from '@/components/personal/BudgetFilterBar';
 import { BudgetActions } from '@/components/personal/BudgetActions';
-import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
+import { ExpenseListSkeleton, Skeleton } from '@/components/common';
+
+// Parse month parameter (supports both "YYYY-MM" and single month number)
+function parseMonthParam(monthParam: string | undefined, defaultYear: number): { year: number; month?: number } {
+  if (!monthParam) {
+    return { year: defaultYear };
+  }
+  
+  // Check if it's YYYY-MM format
+  if (monthParam.includes('-')) {
+    const [yearStr, monthStr] = monthParam.split('-');
+    return {
+      year: parseInt(yearStr),
+      month: parseInt(monthStr),
+    };
+  }
+  
+  // Single month number (legacy support)
+  return {
+    year: defaultYear,
+    month: parseInt(monthParam),
+  };
+}
 
 export default async function PersonalBudgetPage(
-  props: { searchParams: Promise<{ year?: string; month?: string; category?: string }> }
+  props: { searchParams: Promise<{ month?: string; category?: string }> }
 ) {
   const searchParams = await props.searchParams;
   const currentYear = new Date().getFullYear();
-  const year = searchParams.year ? parseInt(searchParams.year) : currentYear;
-  const month = searchParams.month ? parseInt(searchParams.month) : undefined;
+  const { year, month } = parseMonthParam(searchParams.month, currentYear);
   const category = searchParams.category;
 
   return (
@@ -22,11 +43,11 @@ export default async function PersonalBudgetPage(
         <div className="dashboard-header">
           <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>予算設定</h2>
           {/* Year selector */}
-          <YearSelector year={year} />
+          <YearSelector year={year} month={month} />
         </div>
 
         <Card style={{ marginBottom: '1rem' }}>
-          <BudgetFilterBar year={year} />
+          <BudgetFilterBar year={year} currentMonth={month} />
         </Card>
 
         <Suspense fallback={<ExpenseListSkeleton />}>
@@ -54,16 +75,24 @@ export default async function PersonalBudgetPage(
   );
 }
 
-function YearSelector({ year }: { year: number }) {
+function YearSelector({ year, month }: { year: number; month?: number }) {
   const currentYear = new Date().getFullYear();
   const years = [currentYear - 1, currentYear, currentYear + 1];
+
+  // Create month param in YYYY-MM format for consistency
+  const getMonthParam = (y: number) => {
+    if (month) {
+      return `${y}-${String(month).padStart(2, '0')}`;
+    }
+    return `${y}-01`; // Default to January when no month specified
+  };
 
   return (
     <div style={{ display: 'flex', gap: '0.375rem' }}>
       {years.map((y) => (
         <a
           key={y}
-          href={`/personal/budget?year=${y}`}
+          href={`/personal/budget?month=${getMonthParam(y)}`}
           style={{
             padding: '0.375rem 0.75rem',
             fontSize: '0.85rem',

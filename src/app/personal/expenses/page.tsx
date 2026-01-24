@@ -2,11 +2,10 @@ import { Suspense } from 'react';
 import { getPersonalExpensesData, getPersonalBudget } from '@/backend/services/personal-data';
 import { Card } from '@/components/ui/Card';
 import { PersonalExpenseList } from '@/components/personal/PersonalExpenseList';
-import { PersonalFilterBar } from '@/components/personal/PersonalFilterBar';
 import { PersonalExpenseActions } from '@/components/personal/PersonalExpenseActions';
-import { ExpenseListSkeleton, Skeleton } from '@/components/Skeleton';
-import { FilterBar } from '@/components/FilterBar';
-import { PERSONAL_CATEGORIES } from '@/types/category';
+import { ExpenseListSkeleton, Skeleton } from '@/components/common';
+import { FilterBar } from '@/components/common';
+import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
 
 export default async function PersonalExpensesPage(
   props: { searchParams: Promise<{ month?: string; category?: string }> }

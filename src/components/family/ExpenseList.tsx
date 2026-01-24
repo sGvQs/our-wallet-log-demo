@@ -3,12 +3,11 @@
 import { deleteExpense } from '@/backend/actions/expenses';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { CATEGORY_COLORS } from '@/components/FilterBar';
 import { ResponsiveExpenseDialog } from '@/components/expense';
 import { useState, useTransition, useOptimistic } from 'react';
 import { Pencil } from 'lucide-react';
 import type { Expense } from '@/types/prisma';
-import { FAMILY_CATEGORIES } from '@/types/category';
+import { FAMILY_CATEGORIES, FAMILY_CATEGORY_COLORS } from '@/lib/constants/categories';
 
 type ExpenseWithPayer = Expense & {
   payer?: { id: number; name: string | null };
@@ -70,8 +69,8 @@ export function ExpenseList({
       <div className="expense-list">
         {optimisticExpenses.map((expense) => {
           const categoryColor =
-            CATEGORY_COLORS[expense.category as keyof typeof CATEGORY_COLORS] ||
-            CATEGORY_COLORS.OTHER;
+            FAMILY_CATEGORY_COLORS[expense.category as keyof typeof FAMILY_CATEGORY_COLORS] ||
+            FAMILY_CATEGORY_COLORS.OTHER;
           const categoryLabel =
             FAMILY_CATEGORIES[expense.category as keyof typeof FAMILY_CATEGORIES] || 'その他';
           const canEdit =
@@ -111,17 +110,13 @@ export function ExpenseList({
                   >
                     {categoryLabel}
                   </div>
-                  {expense.shop &&
-                    <div className="expense-shop">{expense.shop}</div> 
-                  }
-                  {expense.description &&
+                  {expense.shop && <div className="expense-shop">{expense.shop}</div>}
+                  {expense.description && (
                     <div className="expense-description">{expense.description}</div>
-                  }
+                  )}
                 </div>
                 <div className="expense-actions">
-                  <div className="expense-amount">
-                    ¥{expense.amount.toLocaleString()}
-                  </div>
+                  <div className="expense-amount">¥{expense.amount.toLocaleString()}</div>
                   {canEdit && (
                     <>
                       <Button

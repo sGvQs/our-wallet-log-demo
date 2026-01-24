@@ -3,7 +3,7 @@
 import { useState, useTransition, useOptimistic } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { PERSONAL_CATEGORIES, CATEGORY_COLORS } from '@/lib/constants/personal-categories';
+import { PERSONAL_CATEGORIES, PERSONAL_CATEGORY_COLORS } from '@/lib/constants/categories';
 import { deletePersonalExpense } from '@/backend/actions/personal-expenses';
 import { PersonalExpenseCategory } from '@prisma/client';
 import { Pencil, Trash2 } from 'lucide-react';
@@ -61,7 +61,7 @@ export function PersonalExpenseList({ expenses }: PersonalExpenseListProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       {optimisticExpenses.map((expense) => {
-        const categoryColor = CATEGORY_COLORS[expense.category] || '#888';
+        const categoryColor = PERSONAL_CATEGORY_COLORS[expense.category] || '#888';
         const categoryLabel = PERSONAL_CATEGORIES[expense.category];
         const dateStr = new Date(expense.date).toLocaleDateString('ja-JP', {
           month: 'short',

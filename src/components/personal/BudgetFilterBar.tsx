@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { PERSONAL_CATEGORIES } from '@/lib/constants/personal-categories';
+import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
 import { PersonalExpenseCategory } from '@prisma/client';
 
 // Filter categories (including ALL)
@@ -26,32 +26,46 @@ const FILTER_CATEGORIES: PersonalExpenseCategory[] = [
 
 interface BudgetFilterBarProps {
   year: number;
+  currentMonth?: number;
 }
 
-export function BudgetFilterBar({ year }: BudgetFilterBarProps) {
+export function BudgetFilterBar({ year, currentMonth }: BudgetFilterBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentMonth = searchParams.get('month') || 'ALL';
+  const selectedMonth = currentMonth?.toString() || 'ALL';
   const currentCategory = searchParams.get('category') || 'ALL';
 
-  const handleMonthChange = (month: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('year', year.toString());
-    if (month === 'ALL') {
-      params.delete('month');
+  // Create month param in YYYY-MM format
+  const createMonthParam = (monthNum: number | 'ALL') => {
+    if (monthNum === 'ALL') {
+      return `${year}-01`; // Default to show all (will be parsed as year only)
+    }
+    return `${year}-${String(monthNum).padStart(2, '0')}`;
+  };
+
+  const handleMonthChange = (monthNum: number | 'ALL') => {
+    const params = new URLSearchParams();
+    if (monthNum === 'ALL') {
+      // Show all months for the year - use year-01 but without month filter
+      params.set('month', `${year}-01`);
     } else {
-      params.set('month', month);
+      params.set('month', createMonthParam(monthNum));
+    }
+    if (currentCategory !== 'ALL') {
+      params.set('category', currentCategory);
     }
     router.push(`/personal/budget?${params.toString()}`);
   };
 
   const handleCategoryChange = (category: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('year', year.toString());
-    if (category === 'ALL') {
-      params.delete('category');
+    const params = new URLSearchParams();
+    if (currentMonth) {
+      params.set('month', createMonthParam(currentMonth));
     } else {
+      params.set('month', `${year}-01`);
+    }
+    if (category !== 'ALL') {
       params.set('category', category);
     }
     router.push(`/personal/budget?${params.toString()}`);
@@ -80,8 +94,8 @@ export function BudgetFilterBar({ year }: BudgetFilterBarProps) {
               fontSize: '0.8rem',
               borderRadius: 'var(--radius-full)',
               border: '1px solid var(--color-border)',
-              background: currentMonth === 'ALL' ? 'var(--color-primary-personal)' : 'transparent',
-              color: currentMonth === 'ALL' ? 'white' : 'var(--color-text-muted)',
+              background: selectedMonth === 'ALL' ? 'var(--color-primary-personal)' : 'transparent',
+              color: selectedMonth === 'ALL' ? 'white' : 'var(--color-text-muted)',
               cursor: 'pointer',
               fontWeight: 500,
             }}
@@ -91,14 +105,14 @@ export function BudgetFilterBar({ year }: BudgetFilterBarProps) {
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((m) => (
             <button
               key={m}
-              onClick={() => handleMonthChange(m.toString())}
+              onClick={() => handleMonthChange(m)}
               style={{
                 padding: '0.25rem 0.5rem',
                 fontSize: '0.8rem',
                 borderRadius: 'var(--radius-full)',
                 border: '1px solid var(--color-border)',
-                background: currentMonth === m.toString() ? 'var(--color-primary-personal)' : 'transparent',
-                color: currentMonth === m.toString() ? 'white' : 'var(--color-text-muted)',
+                background: selectedMonth === m.toString() ? 'var(--color-primary-personal)' : 'transparent',
+                color: selectedMonth === m.toString() ? 'white' : 'var(--color-text-muted)',
                 cursor: 'pointer',
                 fontWeight: 500,
                 minWidth: '32px',

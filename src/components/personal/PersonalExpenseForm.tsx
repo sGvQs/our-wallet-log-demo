@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
 import { z } from 'zod';
-import { PERSONAL_CATEGORIES } from '@/lib/constants/personal-categories';
+import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
 import { addPersonalExpense } from '@/backend/actions/personal-expenses';
 import { PersonalExpenseCategory } from '@prisma/client';
 import { Loader2 } from 'lucide-react';

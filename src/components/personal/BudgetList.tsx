@@ -3,7 +3,7 @@
 import { useState, useTransition, useOptimistic } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { PERSONAL_CATEGORIES, CATEGORY_COLORS } from '@/lib/constants/personal-categories';
+import { PERSONAL_CATEGORIES, PERSONAL_CATEGORY_COLORS } from '@/lib/constants/categories';
 import { deletePersonalBudget } from '@/backend/actions/personal-budget';
 import { PersonalExpenseCategory } from '@prisma/client';
 import { Trash2 } from 'lucide-react';
@@ -63,7 +63,7 @@ export function BudgetList({ budgets }: BudgetListProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       {optimisticBudgets.map((budget) => {
-        const categoryColor = CATEGORY_COLORS[budget.category] || '#888';
+        const categoryColor = PERSONAL_CATEGORY_COLORS[budget.category] || '#888';
         const categoryLabel = PERSONAL_CATEGORIES[budget.category];
 
         return (

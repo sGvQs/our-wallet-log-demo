@@ -1,0 +1,38 @@
+/* Shared navigation styles for FamilyNav and PersonalNav */
+
+.navLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  font-weight: 500;
+  transition: all var(--transition-base);
+  border-bottom: 2px solid transparent;
+}
+
+.navLink:hover {
+  opacity: 0.8;
+}
+
+/* Family mode active state */
+.navLink.familyActive {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* Personal mode active state */
+.navLink.personalActive {
+  color: var(--color-primary-personal);
+  border-bottom-color: var(--color-primary-personal);
+}
+
+/* Inactive state */
+.navLink.inactive {
+  color: var(--color-text-muted);
+  border-bottom-color: transparent;
+}
+
+/* Icon spacing */
+.navIcon {
+  margin-right: 0.25rem;
+}

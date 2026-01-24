@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { MonthProvider } from '@/context/MonthContext'
 import { Suspense } from 'react'
 import { TypingAnimation } from "@/components/ui/typing-animation"
-import { ModeSwitch } from '@/components/ModeSwitch'
+import { ModeSwitch } from '@/components/common'
 
 const primaryFont = M_PLUS_Rounded_1c({
   weight: ['300', '400', '500'],

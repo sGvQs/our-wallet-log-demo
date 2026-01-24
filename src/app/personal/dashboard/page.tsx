@@ -3,7 +3,7 @@ import { getPersonalDashboardData } from '@/backend/services/personal-data';
 import { SummaryCard } from '@/components/personal/SummaryCard';
 import { CategoryBreakdown } from '@/components/personal/CategoryBreakdown';
 import { RecentExpenses } from '@/components/personal/RecentExpenses';
-import { Skeleton } from '@/components/Skeleton';
+import { Skeleton } from '@/components/common';
 import { Card } from '@/components/ui/Card';
 
 export default async function PersonalDashboardPage(
