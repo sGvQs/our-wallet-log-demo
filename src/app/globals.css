@@ -444,9 +444,20 @@ button {
     padding-bottom: 0.6rem;
   }
 
+  .expense-content {
+    flex-direction: column;
+  }
+
   .expense-info {
+    width: 100%;
+    justify-content: flex-start;
     gap: 0.75rem;
     overflow: hidden;
+  }
+
+  .expense-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
 
   .expense-category-badge {
@@ -457,15 +468,15 @@ button {
   }
 
   .expense-shop{
-    font-size: 0.95rem;
+    font-size: 0.7rem;
   }
 
   .expense-description {
-    font-size: 0.95rem;
+    font-size: 0.7rem;
   }
 
   .expense-amount {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   /* Date inputs easier to tap */
