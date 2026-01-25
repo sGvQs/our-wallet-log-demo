@@ -88,8 +88,13 @@ button {
 
 .app-title {
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 16px;
   color: var(--color-primary);
+}
+
+.app-side-header {
+  display: flex;
+  gap: 8px;
 }
 
 .app-main {

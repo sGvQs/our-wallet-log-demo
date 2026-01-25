@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMonth } from '@/context/MonthContext';
-import { Receipt, PiggyBank, House } from 'lucide-react';
+import { Receipt, PiggyBank, Inbox } from 'lucide-react';
 import styles from '@/components/common/shared/Nav.module.css';
 
 export function PersonalNav() {
@@ -21,7 +21,7 @@ export function PersonalNav() {
     <div className="dashboard-nav-container personal-nav">
       <div className="dashboard-nav-content">
         <Link href={`/personal/dashboard?month=${month}`} className={getLinkClass(isDashboard)}>
-          <House size={16} className={styles.navIcon} />
+          <Inbox size={16} className={styles.navIcon} />
           ダッシュボード
         </Link>
         <Link href={`/personal/expenses?month=${month}`} className={getLinkClass(isExpenses)}>

@@ -3,11 +3,9 @@ import {
   ClerkProvider,
   SignedIn,
   SignedOut,
-  UserButton,
 } from '@clerk/nextjs'
 import { M_PLUS_Rounded_1c } from 'next/font/google'
 import './globals.css'
-import Link from 'next/link'
 
 import { MonthProvider } from '@/context/MonthContext'
 import { Suspense } from 'react'
@@ -44,17 +42,18 @@ export default function RootLayout({
               <MonthProvider>
                 <div className="app-container">
                   <header className="app-header">
-                    <div>
-                      <h1 className="app-title">
-                        <TypingAnimation words={["アワーウォレットログ 💴", "Our Wallet Log 💵"]}
-                          loop
-                          blinkCursor={true}
-                          pauseDelay={5000}
+                    <h1 className="app-title">
+                      <TypingAnimation words={["アワーウォレットログ 💴", "Our Wallet Log 💵"]}
+                        loop
+                        blinkCursor={true}
+                        pauseDelay={5000}
+                        className='h-20 flex justify-center'
                         />
-                      </h1>
+                    </h1>
+                    <div className="app-side-header">
                       <ModeSwitch />
+                      <ClientUserButton />
                     </div>
-                    <ClientUserButton />
                   </header>
                   <Suspense fallback={<div>Loading...</div>}>
                     {children}
