@@ -21,8 +21,8 @@ const budgetSchema = z.object({
   category: PersonalExpenseCategoryEnum,
   year: z.number().min(2020).max(2100),
   month: z.number().min(1).max(12),
-  who: z.string().max(10, '名前は10文字以下で入力してください'),
-  description: z.string().max(10, '備考は10文字以下で入力してください'),
+  who: z.string().max(8, '名前は8文字以下で入力してください'),
+  description: z.string().max(8, '備考は8文字以下で入力してください'),
 });
 
 type BudgetFormData = z.infer<typeof budgetSchema>;
@@ -110,11 +110,13 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
       <div className={styles.fieldGroup}>
         <label className={styles.label}>誰と（任意）</label>
         <input {...register('who')} placeholder="メモ" className={styles.input} />
+        {errors.who && <p className={styles.error}>{errors.who.message}</p>}
       </div>
 
       <div className={styles.fieldGroup}>
         <label className={styles.label}>内容（任意）</label>
         <input {...register('description')} placeholder="メモ" className={styles.input} />
+        {errors.description && <p className={styles.error}>{errors.description.message}</p>}
       </div>
 
       <div className={styles.fieldGroup}>

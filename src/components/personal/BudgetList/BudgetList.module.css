@@ -70,3 +70,22 @@
   color: var(--color-text-muted);
   opacity: 0.5;
 }
+
+@media (max-width: 768px) {
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+  }
+
+  .colorIndicator {
+    display: none;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
