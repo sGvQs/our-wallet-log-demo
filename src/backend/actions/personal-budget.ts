@@ -11,35 +11,53 @@ type BudgetInput = {
   amount: number;
 };
 
-export async function savePersonalBudgets(
+export async function updatePersonalBudgets(
   year: number,
-  budgets: BudgetInput[]
+  budget: BudgetInput
 ) {
   const user = await getAuthenticatedUser();
   if (!user) return { error: 'Not authenticated' };
 
   try {
-    // Use transaction for atomic upsert
     await prisma.$transaction(async (tx) => {
-      for (const budget of budgets) {
-        // Try to find existing budget
-        const existing = await tx.personalBudget.findFirst({
-          where: {
-            userId: user.id,
-            targetYear: year,
-            targetMonth: budget.month,
-            category: budget.category,
-          },
-        });
+      const existing = await tx.personalBudget.findFirst({
+        where: {
+          userId: user.id,
+          targetYear: year,
+          targetMonth: budget.month,
+          category: budget.category
+        }
+      });
 
-        if (existing) {
-          // Update existing
-          await tx.personalBudget.update({
-            where: { id: existing.id },
-            data: { amount: budget.amount },
-          });
-        } else {
-          // Create new
+      if(existing){
+        await tx.personalBudget.update({
+          where: {
+            id : existing.id
+          },
+          data: {
+            amount: budget.amount
+          }
+        });
+      }
+    });
+
+    revalidatePath('/personal/budget');
+    revalidatePath('/personal/dashboard');
+    return { success: true };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'Unknown error' };
+  }
+}
+
+export async function createPersonalBudgets(
+  year: number,
+  budget: BudgetInput
+) {
+  const user = await getAuthenticatedUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  try {
+    await prisma.$transaction(async (tx) => {
           await tx.personalBudget.create({
             data: {
               userId: user.id,
@@ -49,8 +67,6 @@ export async function savePersonalBudgets(
               amount: budget.amount,
             },
           });
-        }
-      }
     });
 
     revalidatePath('/personal/budget');

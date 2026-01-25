@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
 import { z } from 'zod';
 import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
-import { savePersonalBudgets } from '@/backend/actions/personal-budget';
+import { createPersonalBudgets } from '@/backend/actions/personal-budget';
 import { PersonalExpenseCategory } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
 
@@ -102,13 +102,13 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
 
   const onSubmit = handleSubmit((data: BudgetFormData) => {
     startTransition(async () => {
-      const result = await savePersonalBudgets(data.year, [
+      const result = await createPersonalBudgets(data.year, 
         {
           month: data.month,
           category: data.category,
           amount: data.amount,
         },
-      ]);
+      );
 
       if (result?.error) {
         setError('root', { message: result.error });
