@@ -33,6 +33,8 @@ const budgetSchema = z.object({
   category: PersonalExpenseCategoryEnum,
   year: z.number().min(2020).max(2100),
   month: z.number().min(1).max(12),
+  who: z.string().max(10, '名前は10文字以下で入力してください'),
+  description: z.string().max(10, '備考は10文字以下で入力してください'),
 });
 
 type BudgetFormData = z.infer<typeof budgetSchema>;
@@ -107,6 +109,8 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
           month: data.month,
           category: data.category,
           amount: data.amount,
+          who: data.who,
+          description: data.description,
         },
       );
 
@@ -180,6 +184,26 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
             </option>
           ))}
         </select>
+      </div>
+
+      {/* Who */}
+      <div>
+        <label style={labelStyle}>誰と（任意）</label>
+        <input
+          {...register('who')}
+          placeholder="メモ"
+          style={inputBaseStyle}
+        />
+      </div>
+
+      {/* Description */}
+      <div>
+        <label style={labelStyle}>内容（任意）</label>
+        <input
+          {...register('description')}
+          placeholder="メモ"
+          style={inputBaseStyle}
+        />
       </div>
 
       {/* Amount */}

@@ -126,6 +126,8 @@ model PersonalBudget {
   amount    Int
   targetMonth Int
   targetYear Int
+  description String?
+  who String?
   category  PersonalExpenseCategory
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

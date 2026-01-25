@@ -9,6 +9,8 @@ type BudgetInput = {
   month: number;
   category: PersonalExpenseCategory;
   amount: number;
+  who: string | null;
+  description: string | null;
 };
 
 export async function updatePersonalBudgets(
@@ -25,7 +27,7 @@ export async function updatePersonalBudgets(
           userId: user.id,
           targetYear: year,
           targetMonth: budget.month,
-          category: budget.category
+          category: budget.category,
         }
       });
 
@@ -35,7 +37,12 @@ export async function updatePersonalBudgets(
             id : existing.id
           },
           data: {
-            amount: budget.amount
+            amount: budget.amount,
+            targetYear: year,
+            targetMonth: budget.month,
+            category: budget.category,
+            who: budget.who,
+            description: budget.description,
           }
         });
       }
@@ -65,11 +72,13 @@ export async function createPersonalBudgets(
               targetMonth: budget.month,
               category: budget.category,
               amount: budget.amount,
+              who: budget.who,
+              description: budget.description,
             },
           });
     });
 
-    revalidatePath('/personal/budget');
+    // revalidatePath('/personal/budget');
     revalidatePath('/personal/dashboard');
     return { success: true };
   } catch (e) {

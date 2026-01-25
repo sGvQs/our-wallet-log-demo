@@ -203,6 +203,9 @@ docker compose down
 # Prismaスタジオ（DBブラウザ）
 npx prisma studio
 
+# マイグレーションリセット
+npx prisma migrate reset
+
 # マイグレーション作成・適用
 npx prisma migrate dev --name <migration_name>
 

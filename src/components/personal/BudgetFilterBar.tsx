@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
 import { PersonalExpenseCategory } from '@prisma/client';
+import { useState } from 'react';
 
 // Filter categories (including ALL)
 const FILTER_CATEGORIES: PersonalExpenseCategory[] = [
@@ -33,13 +34,13 @@ export function BudgetFilterBar({ year, currentMonth }: BudgetFilterBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const selectedMonth = currentMonth?.toString() || 'ALL';
+  const [selectedMonth, setSelectedMonth ]= useState(currentMonth?.toString() || 'ALL');
   const currentCategory = searchParams.get('category') || 'ALL';
 
   // Create month param in YYYY-MM format
   const createMonthParam = (monthNum: number | 'ALL') => {
     if (monthNum === 'ALL') {
-      return `${year}-01`; // Default to show all (will be parsed as year only)
+      return `${year}-00`; // Default to show all (will be parsed as year only)
     }
     return `${year}-${String(monthNum).padStart(2, '0')}`;
   };
@@ -47,10 +48,11 @@ export function BudgetFilterBar({ year, currentMonth }: BudgetFilterBarProps) {
   const handleMonthChange = (monthNum: number | 'ALL') => {
     const params = new URLSearchParams();
     if (monthNum === 'ALL') {
-      // Show all months for the year - use year-01 but without month filter
-      params.set('month', `${year}-01`);
+      params.set('month', createMonthParam(monthNum));
+      setSelectedMonth("ALL");
     } else {
       params.set('month', createMonthParam(monthNum));
+      setSelectedMonth(monthNum.toString());
     }
     if (currentCategory !== 'ALL') {
       params.set('category', currentCategory);

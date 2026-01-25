@@ -14,6 +14,8 @@ interface PersonalBudget {
   targetMonth: number;
   targetYear: number;
   category: PersonalExpenseCategory;
+  who: string | null;
+  description: string | null;
   userId: number;
   createdAt: Date;
   updatedAt: Date;
@@ -108,6 +110,34 @@ export function BudgetList({ budgets }: BudgetListProps) {
                   >
                     {categoryLabel}
                   </span>
+                  {budget.who && 
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        padding: '0.125rem 0.5rem',
+                        borderRadius: 'var(--radius-sm)',
+                        background: `${categoryColor}15`,
+                        color: categoryColor,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {budget.who}
+                    </span>
+                  }
+                  {budget.description &&
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        padding: '0.125rem 0.5rem',
+                        borderRadius: 'var(--radius-sm)',
+                        background: `${categoryColor}15`,
+                        color: categoryColor,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {budget.description}
+                    </span>
+                  }
                 </div>
                 <p
                   style={{
