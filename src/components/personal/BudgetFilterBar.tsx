@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
 import { PersonalExpenseCategory } from '@prisma/client';
-import { useState } from 'react';
 
 // Filter categories (including ALL)
 const FILTER_CATEGORIES: PersonalExpenseCategory[] = [
@@ -27,138 +26,101 @@ const FILTER_CATEGORIES: PersonalExpenseCategory[] = [
 
 interface BudgetFilterBarProps {
   year: number;
-  currentMonth?: number;
 }
 
-export function BudgetFilterBar({ year, currentMonth }: BudgetFilterBarProps) {
+export function BudgetFilterBar({ year }: BudgetFilterBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [selectedMonth, setSelectedMonth ]= useState(currentMonth?.toString() || 'ALL');
+  // URLから現在の値を取得 (存在しない場合は 'ALL' とする)
   const currentCategory = searchParams.get('category') || 'ALL';
+  const monthParam = searchParams.get('month'); // format: YYYY-MM
 
-  // Create month param in YYYY-MM format
-  const createMonthParam = (monthNum: number | 'ALL') => {
-    if (monthNum === 'ALL') {
-      return `${year}-00`; // Default to show all (will be parsed as year only)
-    }
-    return `${year}-${String(monthNum).padStart(2, '0')}`;
-  };
+  // YYYY-MM から MM 部分だけを抽出して現在の選択値とする。パラメータがない場合は 'ALL'
+  const currentMonthValue = monthParam ? monthParam.split('-')[1] : 'ALL'; // Returns "01", "02", ... or "ALL"
 
-  const handleMonthChange = (monthNum: number | 'ALL') => {
-    const params = new URLSearchParams();
-    if (monthNum === 'ALL') {
-      params.set('month', createMonthParam(monthNum));
-      setSelectedMonth("ALL");
+  // フィルター変更時の共通ハンドラー
+  const handleFilterChange = (key: 'month' | 'category', value: string) => {
+    // 現在のパラメータを複製（他のパラメータを消さないため）
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (value === 'ALL') {
+      // "ALL" が選ばれたらパラメータ自体を削除
+      params.delete(key);
     } else {
-      params.set('month', createMonthParam(monthNum));
-      setSelectedMonth(monthNum.toString());
+      // 値をセット
+      if (key === 'month') {
+        // 月の場合は YYYY-MM 形式に変換
+        // value は "1" ~ "12" なので、0埋めしてフォーマット
+        params.set(key, `${year}-${value.padStart(2, '0')}`);
+      } else {
+        params.set(key, value);
+      }
     }
-    if (currentCategory !== 'ALL') {
-      params.set('category', currentCategory);
-    }
+
     router.push(`/personal/budget?${params.toString()}`);
   };
 
-  const handleCategoryChange = (category: string) => {
-    const params = new URLSearchParams();
-    if (currentMonth) {
-      params.set('month', createMonthParam(currentMonth));
-    } else {
-      params.set('month', `${year}-01`);
-    }
-    if (category !== 'ALL') {
-      params.set('category', category);
-    }
-    router.push(`/personal/budget?${params.toString()}`);
+  const selectStyle = {
+    padding: '0.375rem 2rem 0.375rem 0.75rem', // 右側のpaddingは矢印用
+    fontSize: '0.875rem',
+    borderRadius: '0.375rem',
+    border: '1px solid var(--color-border)',
+    background: 'var(--color-background)',
+    color: 'var(--color-text)',
+    cursor: 'pointer',
+    minWidth: '120px',
+    appearance: 'none' as const, // デフォルトの矢印を消す場合（必要に応じてCSSでカスタム矢印を追加）
+    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 0.5rem center',
+    backgroundSize: '1em',
+  };
+
+  const labelStyle = {
+    fontSize: '0.75rem',
+    fontWeight: 600,
+    color: 'var(--color-text-muted)',
+    display: 'block',
+    marginBottom: '0.375rem',
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-      {/* Month filter */}
+    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      {/* Month Selector */}
       <div>
-        <label
-          style={{
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            color: 'var(--color-text-muted)',
-            display: 'block',
-            marginBottom: '0.375rem',
-          }}
+        <label style={labelStyle}>月</label>
+        <select
+          value={currentMonthValue === 'ALL' ? 'ALL' : String(Number(currentMonthValue))} // "05" -> "5" に戻して比較
+          onChange={(e) => handleFilterChange('month', e.target.value)}
+          style={selectStyle}
         >
-          月
-        </label>
-        <div style={{ display: 'flex', gap: '0.375rem', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => handleMonthChange('ALL')}
-            style={{
-              padding: '0.25rem 0.625rem',
-              fontSize: '0.8rem',
-              borderRadius: 'var(--radius-full)',
-              border: '1px solid var(--color-border)',
-              background: selectedMonth === 'ALL' ? 'var(--color-primary-personal)' : 'transparent',
-              color: selectedMonth === 'ALL' ? 'white' : 'var(--color-text-muted)',
-              cursor: 'pointer',
-              fontWeight: 500,
-            }}
-          >
-            全て
-          </button>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((m) => (
-            <button
-              key={m}
-              onClick={() => handleMonthChange(m)}
-              style={{
-                padding: '0.25rem 0.5rem',
-                fontSize: '0.8rem',
-                borderRadius: 'var(--radius-full)',
-                border: '1px solid var(--color-border)',
-                background: selectedMonth === m.toString() ? 'var(--color-primary-personal)' : 'transparent',
-                color: selectedMonth === m.toString() ? 'white' : 'var(--color-text-muted)',
-                cursor: 'pointer',
-                fontWeight: 500,
-                minWidth: '32px',
-              }}
-            >
-              {m}
-            </button>
-          ))}
-        </div>
+          <option value="ALL">全て</option>
+          {[...Array(12)].map((_, i) => {
+            const m = i + 1;
+            return (
+              <option key={m} value={m.toString()}>
+                {m}月
+              </option>
+            );
+          })}
+        </select>
       </div>
 
-      {/* Category filter */}
+      {/* Category Selector */}
       <div>
-        <label
-          style={{
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            color: 'var(--color-text-muted)',
-            display: 'block',
-            marginBottom: '0.375rem',
-          }}
+        <label style={labelStyle}>カテゴリ</label>
+        <select
+          value={currentCategory}
+          onChange={(e) => handleFilterChange('category', e.target.value)}
+          style={selectStyle}
         >
-          カテゴリ
-        </label>
-        <div style={{ display: 'flex', gap: '0.375rem', flexWrap: 'wrap' }}>
           {FILTER_CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-              style={{
-                padding: '0.25rem 0.625rem',
-                fontSize: '0.75rem',
-                borderRadius: 'var(--radius-full)',
-                border: '1px solid var(--color-border)',
-                background: currentCategory === cat ? 'var(--color-primary-personal)' : 'transparent',
-                color: currentCategory === cat ? 'white' : 'var(--color-text-muted)',
-                cursor: 'pointer',
-                fontWeight: 500,
-              }}
-            >
-              {PERSONAL_CATEGORIES[cat]}
-            </button>
+            <option key={cat} value={cat}>
+              {cat === 'ALL' ? '全て' : PERSONAL_CATEGORIES[cat]}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
     </div>
   );

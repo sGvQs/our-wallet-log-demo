@@ -176,6 +176,7 @@ button {
     flex-direction: column;
     gap: 1.5rem;
     padding-top: 1.5rem;
+    padding-bottom: 5rem;
   }
 
   .month-nav {
