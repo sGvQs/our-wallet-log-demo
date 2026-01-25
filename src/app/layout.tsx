@@ -13,6 +13,7 @@ import { MonthProvider } from '@/context/MonthContext'
 import { Suspense } from 'react'
 import { TypingAnimation } from "@/components/ui/typing-animation"
 import { ModeSwitch } from '@/components/common'
+import { ClientUserButton } from '@/components/common/ClientUserButton'
 
 const primaryFont = M_PLUS_Rounded_1c({
   weight: ['300', '400', '500'],
@@ -53,7 +54,7 @@ export default function RootLayout({
                       </h1>
                       <ModeSwitch />
                     </div>
-                    <UserButton />
+                    <ClientUserButton />
                   </header>
                   <Suspense fallback={<div>Loading...</div>}>
                     {children}
