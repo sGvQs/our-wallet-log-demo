@@ -4,13 +4,6 @@
   gap: 0.25rem;
 }
 
-.mobileDisplay {
-  display: none;
-  font-weight: 600;
-  color: var(--color-text-main);
-  padding: 0.5rem 0;
-}
-
 .title {
   font-size: 0.75rem;
   font-weight: 600;
@@ -49,10 +42,6 @@
     flex-direction: row;
     overflow-x: auto;
     padding-bottom: 0.5rem;
-  }
-
-  .mobileDisplay {
-    display: block;
   }
 
   .title {

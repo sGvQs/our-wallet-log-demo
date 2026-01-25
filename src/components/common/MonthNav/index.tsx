@@ -31,9 +31,6 @@ export function MonthNav() {
 
   return (
     <nav className={styles.container}>
-      <div className={styles.mobileDisplay}>
-        {activeMonth.split('-')[0]}年 {parseInt(activeMonth.split('-')[1])}月
-      </div>
       <h3 className={styles.title}>月を選択</h3>
       {months.map((month) => {
         const isActive = activeMonth === month.value;
