@@ -1,0 +1,171 @@
+.headerTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-border);
+}
+
+.settlementCard {
+  border: 2px solid var(--color-border);
+  background: var(--color-bg-surface);
+}
+
+.settlementTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settlementList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.settlementItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg-app);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.settlementNames {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.settlementName {
+  font-weight: 600;
+}
+
+.settlementArrow {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.settlementAmount {
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.settlementHint {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.noSettlement {
+  color: var(--color-text-muted);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.totalTitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.totalAmount {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.balanceTitle {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.balanceList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.balanceItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.balanceUser {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--color-bg-app);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.userName {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.balanceDetails {
+  text-align: right;
+}
+
+.paidAmount {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.balance {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.balancePositive {
+  color: var(--accent-blue);
+}
+
+.balanceNegative {
+  color: var(--accent-red);
+}
+
+.authError {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.authErrorTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.authErrorMessage {
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+}

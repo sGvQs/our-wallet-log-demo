@@ -1,10 +1,9 @@
 import { Suspense } from 'react';
 import { getPersonalDashboardData } from '@/backend/services/personal-data';
-import { SummaryCard } from '@/components/personal/SummaryCard';
-import { CategoryBreakdown } from '@/components/personal/CategoryBreakdown';
-import { RecentExpenses } from '@/components/personal/RecentExpenses';
+import { SummaryCard, CategoryBreakdown, RecentExpenses } from '@/components/personal';
 import { Skeleton } from '@/components/common';
 import { Card } from '@/components/ui/Card';
+import styles from './page.module.css';
 
 export default async function PersonalDashboardPage(
   props: { searchParams: Promise<{ month?: string }> }
@@ -13,17 +12,8 @@ export default async function PersonalDashboardPage(
   const currentMonth = searchParams.month || new Date().toISOString().slice(0, 7);
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-      <h1
-        style={{
-          fontSize: '1.25rem',
-          fontWeight: 700,
-          marginBottom: '1.5rem',
-          color: 'var(--color-text-main)',
-        }}
-      >
-        個人用ダッシュボード
-      </h1>
+    <div className={styles.container}>
+      <h1 className={styles.pageTitle}>個人用ダッシュボード</h1>
 
       <Suspense fallback={<DashboardSkeleton />}>
         <DashboardContent currentMonth={currentMonth} />
@@ -38,7 +28,7 @@ async function DashboardContent({ currentMonth }: { currentMonth: string }) {
   if (!data) {
     return (
       <Card>
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
+        <div className={styles.authError}>
           <p>ログインが必要です</p>
         </div>
       </Card>
@@ -46,29 +36,18 @@ async function DashboardContent({ currentMonth }: { currentMonth: string }) {
   }
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '1.5rem',
-      }}
-    >
-      {/* Summary Card */}
+    <div className={styles.grid}>
       <SummaryCard
         totalBudget={data.totalBudget}
         totalExpenses={data.totalExpenses}
         budgetUsedPercent={data.budgetUsedPercent}
         month={currentMonth}
       />
-
-      {/* Category Breakdown */}
       <CategoryBreakdown
         categorySummary={data.categorySummary}
         totalExpenses={data.totalExpenses}
       />
-
-      {/* Recent Expenses - full width */}
-      <div style={{ gridColumn: '1 / -1' }}>
+      <div className={styles.fullWidth}>
         <RecentExpenses expenses={data.expenses} month={currentMonth} />
       </div>
     </div>
@@ -77,23 +56,11 @@ async function DashboardContent({ currentMonth }: { currentMonth: string }) {
 
 function DashboardSkeleton() {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '1.5rem',
-      }}
-    >
-      <Card>
-        <Skeleton style={{ height: '200px' }} />
-      </Card>
-      <Card>
-        <Skeleton style={{ height: '200px' }} />
-      </Card>
-      <div style={{ gridColumn: '1 / -1' }}>
-        <Card>
-          <Skeleton style={{ height: '150px' }} />
-        </Card>
+    <div className={styles.grid}>
+      <Card><Skeleton style={{ height: '200px' }} /></Card>
+      <Card><Skeleton style={{ height: '200px' }} /></Card>
+      <div className={styles.fullWidth}>
+        <Card><Skeleton style={{ height: '150px' }} /></Card>
       </div>
     </div>
   );

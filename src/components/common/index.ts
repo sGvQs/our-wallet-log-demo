@@ -4,3 +4,4 @@ export { FilterBar } from './FilterBar';
 export { ModeSwitch } from './ModeSwitch';
 export { MonthNav } from './MonthNav';
 export { Skeleton, ExpenseListSkeleton, SidebarSkeleton } from './Skeleton';
+export { ClientUserButton } from './ClientUserButton';

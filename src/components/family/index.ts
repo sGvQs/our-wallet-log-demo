@@ -1,4 +1,4 @@
-// Family-specific components
+// Family mode components
 
 export { FamilyNav } from './FamilyNav';
 export { ExpenseList } from './ExpenseList';

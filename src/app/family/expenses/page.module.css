@@ -1,0 +1,44 @@
+.headerTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.summaryWrapper {
+  margin-bottom: 1.5rem;
+}
+
+.summaryTitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.summaryAmount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.categoryFilter {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-border);
+}
+
+.authError {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.authErrorTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}

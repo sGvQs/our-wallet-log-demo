@@ -1,0 +1,114 @@
+/* Shared dialog styles for personal components */
+
+.drawerContent {
+  background-color: var(--color-bg-surface);
+  max-height: 90vh;
+}
+
+.drawerTitle {
+  color: var(--color-text-main);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.drawerDescription {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.drawerBody {
+  padding: 0 1.5rem 1.5rem;
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom) + 1rem);
+  overflow-y: auto;
+  max-height: calc(90vh - 120px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.dialogContent {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  padding: 0;
+  overflow: hidden;
+  max-width: 440px;
+  width: calc(100% - 2rem);
+}
+
+.dialogHeader {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(to bottom, var(--color-bg-surface), rgba(248, 250, 253, 0.5));
+}
+
+.dialogTitle {
+  color: var(--color-text-main);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.dialogSubtitle {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.dialogBody {
+  padding: 1.25rem 1.5rem 1.5rem;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+/* FAB Styles */
+.fabContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--color-bg-app) 60%, transparent);
+  z-index: 40;
+  pointer-events: none;
+}
+
+.fabWrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  pointer-events: auto;
+}
+
+.fabButton {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-personal);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(94, 138, 204, 0.35), 0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fabButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(94, 138, 204, 0.4), 0 3px 6px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.fabButton:active {
+  transform: translateY(0) scale(0.98);
+}

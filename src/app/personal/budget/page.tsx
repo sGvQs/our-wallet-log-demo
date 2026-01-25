@@ -1,31 +1,17 @@
 import { Suspense } from 'react';
 import { getPersonalBudgetsForYear } from '@/backend/services/personal-data';
 import { Card } from '@/components/ui/Card';
-import { BudgetList } from '@/components/personal/BudgetList';
-import { BudgetFilterBar } from '@/components/personal/BudgetFilterBar';
-import { BudgetActions } from '@/components/personal/BudgetActions';
+import { BudgetList, BudgetFilterBar, BudgetActions } from '@/components/personal';
 import { ExpenseListSkeleton, Skeleton } from '@/components/common';
+import styles from './page.module.css';
 
-// Parse month parameter (supports both "YYYY-MM" and single month number)
 function parseMonthParam(monthParam: string | undefined, defaultYear: number): { year: number; month?: number } {
-  if (!monthParam) {
-    return { year: defaultYear };
-  }
-  
-  // Check if it's YYYY-MM format
+  if (!monthParam) return { year: defaultYear };
   if (monthParam.includes('-')) {
     const [yearStr, monthStr] = monthParam.split('-');
-    return {
-      year: parseInt(yearStr),
-      month: parseInt(monthStr),
-    };
+    return { year: parseInt(yearStr), month: parseInt(monthStr) };
   }
-  
-  // Single month number (legacy support)
-  return {
-    year: defaultYear,
-    month: parseInt(monthParam),
-  };
+  return { year: defaultYear, month: parseInt(monthParam) };
 }
 
 export default async function PersonalBudgetPage(
@@ -38,16 +24,14 @@ export default async function PersonalBudgetPage(
 
   return (
     <div className="dashboard-grid">
-      {/* Main Content: Budget List */}
       <div className="dashboard-main">
         <div className="dashboard-header">
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>予算設定</h2>
-          {/* Year selector */}
+          <h2 className={styles.headerTitle}>予算設定</h2>
           <YearSelector year={year} month={month} />
         </div>
 
-        <Card style={{ marginBottom: '1rem' }}>
-          <BudgetFilterBar year={year} currentMonth={month} />
+        <Card className={styles.filterCard}>
+          <BudgetFilterBar year={year} />
         </Card>
 
         <Suspense fallback={<ExpenseListSkeleton />}>
@@ -55,21 +39,17 @@ export default async function PersonalBudgetPage(
         </Suspense>
       </div>
 
-      {/* Sidebar: Summary */}
       <div className="dashboard-sidebar">
         <Card>
-          <div style={{ marginBottom: '1rem' }}>
-            <h3 style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>
-              {year}年の予算合計
-            </h3>
-            <Suspense fallback={<Skeleton className="skeleton-text" style={{ height: '3rem', width: '80%' }} />}>
+          <div className={styles.summaryWrapper}>
+            <h3 className={styles.summaryTitle}>{year}年の予算合計</h3>
+            <Suspense fallback={<Skeleton style={{ height: '3rem', width: '80%' }} />}>
               <SummarySection year={year} />
             </Suspense>
           </div>
         </Card>
       </div>
 
-      {/* Floating Action Button + Dialog */}
       <BudgetActions />
     </div>
   );
@@ -79,30 +59,18 @@ function YearSelector({ year, month }: { year: number; month?: number }) {
   const currentYear = new Date().getFullYear();
   const years = [currentYear - 1, currentYear, currentYear + 1];
 
-  // Create month param in YYYY-MM format for consistency
   const getMonthParam = (y: number) => {
-    if (month) {
-      return `${y}-${String(month).padStart(2, '0')}`;
-    }
-    return `${y}-01`; // Default to January when no month specified
+    if (month) return `${y}-${String(month).padStart(2, '0')}`;
+    return `${y}-01`;
   };
 
   return (
-    <div style={{ display: 'flex', gap: '0.375rem' }}>
+    <div className={styles.yearSelector}>
       {years.map((y) => (
         <a
           key={y}
           href={`/personal/budget?month=${getMonthParam(y)}`}
-          style={{
-            padding: '0.375rem 0.75rem',
-            fontSize: '0.85rem',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--color-border)',
-            background: y === year ? 'var(--color-primary-personal)' : 'transparent',
-            color: y === year ? 'white' : 'var(--color-text-muted)',
-            textDecoration: 'none',
-            fontWeight: 500,
-          }}
+          className={`${styles.yearLink} ${y === year ? styles.active : styles.inactive}`}
         >
           {y}
         </a>
@@ -115,20 +83,14 @@ async function BudgetSection({ year, month, category }: { year: number; month?: 
   const budgets = await getPersonalBudgetsForYear(year, month, category);
 
   if (!budgets) {
-    return (
-      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <p>ログインが必要です</p>
-      </div>
-    );
+    return <div className={styles.authError}><p>ログインが必要です</p></div>;
   }
 
   if (budgets.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)', background: 'var(--color-bg-surface)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
+      <div className={styles.emptyState}>
         <p>予算が設定されていません</p>
-        <p style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>
-          下のボタンから予算を追加しましょう
-        </p>
+        <p className={styles.emptyHint}>下のボタンから予算を追加しましょう</p>
       </div>
     );
   }
@@ -140,9 +102,5 @@ async function SummarySection({ year }: { year: number }) {
   const budgets = await getPersonalBudgetsForYear(year);
   const totalAmount = budgets?.reduce((sum, b) => sum + b.amount, 0) ?? 0;
 
-  return (
-    <p style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-primary-personal)' }}>
-      ¥{totalAmount.toLocaleString()}
-    </p>
-  );
+  return <p className={styles.summaryAmount}>¥{totalAmount.toLocaleString()}</p>;
 }

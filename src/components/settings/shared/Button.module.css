@@ -1,0 +1,8 @@
+.leaveButton {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+}
+
+.deleteButton {
+  color: var(--text-muted);
+}

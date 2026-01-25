@@ -3,9 +3,10 @@ import { getCurrentUser, getUserGroup, getGroupExpenses } from '@/backend/servic
 import { calculateSettlements } from '@/backend/services/settlement';
 import { Card } from '@/components/ui/Card';
 import { ExpenseList } from '@/components/family';
-import { FilterBar, ExpenseListSkeleton, Skeleton, SidebarSkeleton } from '@/components/common';
+import { FilterBar, ExpenseListSkeleton, SidebarSkeleton } from '@/components/common';
 import { ExpenseActions } from '@/components/expense';
 import { FAMILY_CATEGORIES } from '@/lib/constants/categories';
+import styles from './page.module.css';
 
 export default async function GroupDashboardPage(props: { searchParams: Promise<{ month?: string; category?: string }> }) {
   const searchParams = await props.searchParams;
@@ -13,12 +14,9 @@ export default async function GroupDashboardPage(props: { searchParams: Promise<
 
   return (
     <div className="dashboard-grid">
-      {/* Main Content: Team Expense List */}
       <div className="dashboard-main">
         <div className="dashboard-header">
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>
-            チームの支出一覧
-          </h2>
+          <h2 className={styles.headerTitle}>チームの支出一覧</h2>
           <FilterBar category={FAMILY_CATEGORIES} />
         </div>
 
@@ -27,12 +25,10 @@ export default async function GroupDashboardPage(props: { searchParams: Promise<
         </Suspense>
       </div>
 
-      {/* Sidebar: Summary & Settlements */}
       <Suspense fallback={<SidebarSkeleton />}>
         <GroupSidebarSection currentMonth={currentMonth} category={searchParams.category} />
       </Suspense>
 
-      {/* Floating Action Button + Modal */}
       <ExpenseActions />
     </div>
   );
@@ -47,11 +43,7 @@ async function GroupExpensesSection({ currentMonth, category }: { currentMonth: 
   const expenses = await getGroupExpenses(currentMonth, category);
 
   if (expenses.length === 0) {
-    return (
-      <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)', background: 'var(--color-bg-surface)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
-        まだ支出がありません
-      </div>
-    );
+    return <div className={styles.emptyState}>まだ支出がありません</div>;
   }
 
   return <ExpenseList expenses={expenses} currentUserId={user.id} />;
@@ -76,68 +68,48 @@ async function GroupSidebarSection({ currentMonth, category }: { currentMonth: s
 
   return (
     <div className="dashboard-sidebar">
-      {/* Settlement Plan */}
-      <Card style={{ border: '2px solid var(--color-border)', background: 'var(--color-bg-surface)' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <Card className={styles.settlementCard}>
+        <h3 className={styles.settlementTitle}>
           <span>💰</span> 精算プラン ({currentMonth.replace('-', '年')}月)
         </h3>
         {settlements.length > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div className={styles.settlementList}>
             {settlements.map((s, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                background: 'var(--color-bg-app)', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}>
-                  <span style={{ fontWeight: 600 }}>{getName(s.fromUserId)}</span>
-                  <span style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>→</span>
-                  <span style={{ fontWeight: 600 }}>{getName(s.toUserId)}</span>
+              <div key={i} className={styles.settlementItem}>
+                <div className={styles.settlementNames}>
+                  <span className={styles.settlementName}>{getName(s.fromUserId)}</span>
+                  <span className={styles.settlementArrow}>→</span>
+                  <span className={styles.settlementName}>{getName(s.toUserId)}</span>
                 </div>
-                <div style={{ fontWeight: 700, color: 'var(--color-text-main)' }}>
-                  ¥{s.amount.toLocaleString()}
-                </div>
+                <div className={styles.settlementAmount}>¥{s.amount.toLocaleString()}</div>
               </div>
             ))}
-            <p style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--color-text-muted)', textAlign: 'center' }}>
-              これを支払えば平均になります
-            </p>
+            <p className={styles.settlementHint}>これを支払えば平均になります</p>
           </div>
         ) : (
-          <p style={{ color: 'var(--color-text-muted)', textAlign: 'center', fontSize: '0.9rem' }}>
-            精算は不要です 🎉
-          </p>
+          <p className={styles.noSettlement}>精算は不要です 🎉</p>
         )}
       </Card>
 
       <Card>
         <div>
-          <h3 style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>チーム合計 ({currentMonth})</h3>
-          <p style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
-            ¥{totalAmount.toLocaleString()}
-          </p>
+          <h3 className={styles.totalTitle}>チーム合計 ({currentMonth})</h3>
+          <p className={styles.totalAmount}>¥{totalAmount.toLocaleString()}</p>
         </div>
       </Card>
 
       <Card>
-        <h3 style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', marginBottom: '1rem' }}>バランス詳細</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <h3 className={styles.balanceTitle}>バランス詳細</h3>
+        <div className={styles.balanceList}>
           {balances.map((b) => (
-            <div key={b.userId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem' }}>
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <div style={{
-                  width: '2rem', height: '2rem', borderRadius: '50%', background: 'var(--color-bg-app)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontWeight: 700, fontSize: '0.8rem'
-                }}>
-                  {b.name[0]}
-                </div>
-                <span style={{ fontWeight: 500, fontSize: '0.9rem' }}>{b.name}</span>
+            <div key={b.userId} className={styles.balanceItem}>
+              <div className={styles.balanceUser}>
+                <div className={styles.avatar}>{b.name[0]}</div>
+                <span className={styles.userName}>{b.name}</span>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>払った額: ¥{b.paid.toLocaleString()}</div>
-                <div style={{
-                  fontSize: '0.9rem', fontWeight: 700,
-                  color: b.balance >= 0 ? 'var(--accent-blue)' : 'var(--accent-red)'
-                }}>
+              <div className={styles.balanceDetails}>
+                <div className={styles.paidAmount}>払った額: ¥{b.paid.toLocaleString()}</div>
+                <div className={`${styles.balance} ${b.balance >= 0 ? styles.balancePositive : styles.balanceNegative}`}>
                   {b.balance >= 0 ? '+' : ''}{b.balance.toLocaleString()}
                 </div>
               </div>
@@ -151,9 +123,9 @@ async function GroupSidebarSection({ currentMonth, category }: { currentMonth: s
 
 function GroupAuthError({ user }: { user: any }) {
   return (
-    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-      <h1 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>ようこそ、{user?.name || 'ゲスト'}さん</h1>
-      <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
+    <div className={styles.authError}>
+      <h1 className={styles.authErrorTitle}>ようこそ、{user?.name || 'ゲスト'}さん</h1>
+      <p className={styles.authErrorMessage}>
         設定からグループを作成するか、既存のグループに参加しましょう。
       </p>
     </div>

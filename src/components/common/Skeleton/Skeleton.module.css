@@ -1,0 +1,89 @@
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-surface) 25%,
+    var(--color-border) 50%,
+    var(--color-bg-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+  height: 1rem;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.expenseList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.expenseCard {
+  padding: 1rem;
+}
+
+.expenseContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expenseInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.expenseActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge {
+  width: 4rem;
+  height: 1.5rem;
+  border-radius: var(--radius-full);
+}
+
+.amount {
+  width: 5rem;
+  height: 1.25rem;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summaryCard {
+  height: 120px;
+}
+
+.breakdownCard {
+  height: 300px;
+}
+
+.marginBottom {
+  margin-bottom: 1rem;
+}
+
+.marginBottomLg {
+  margin-bottom: 1.5rem;
+}
+
+.breakdownRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}

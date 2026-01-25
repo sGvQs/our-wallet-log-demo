@@ -1,0 +1,96 @@
+.header {
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.progressWrapper {
+  margin-bottom: 1rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.statValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.remainingBox {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remainingBox.positive {
+  background: rgba(94, 138, 204, 0.1);
+}
+
+.remainingBox.negative {
+  background: rgba(231, 76, 60, 0.1);
+}
+
+.remainingLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.remainingValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.remainingValue.positive {
+  color: var(--color-primary-personal);
+}
+
+.remainingValue.negative {
+  color: #e74c3c;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.emptyTitle {
+  margin-bottom: 0.5rem;
+}
+
+.emptyDescription {
+  font-size: 0.85rem;
+}
+
+.emptyExpenses {
+  margin-top: 1.5rem;
+}
+
+.emptyExpensesLabel {
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.emptyExpensesValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
