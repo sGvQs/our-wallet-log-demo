@@ -175,6 +175,10 @@ export async function createBulkPersonalBudgets(
           });
         }
       }
+    },
+    {
+      maxWait: 5000, // コネクション取得待ちの最大時間
+      timeout: 20000 // トランザクション全体の最大実行時間（20秒）
     });
 
     revalidatePath('/personal/budget');
