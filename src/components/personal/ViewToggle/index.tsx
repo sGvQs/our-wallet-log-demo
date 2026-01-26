@@ -58,23 +58,22 @@ export function ViewToggle({ mode, year }: ViewToggleProps) {
           年次
         </button>
       </div>
-
       {mode === 'yearly' && (
-        <div className={styles.yearSelector}>
-          <span className={styles.yearLabel}>年:</span>
-          <select
-            className={styles.yearSelect}
-            value={year}
-            onChange={(e) => handleYearChange(Number(e.target.value))}
-          >
-            {years.map((y) => (
-              <option key={y} value={y}>
-                {y}年
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+          <div className={styles.yearSelector}>
+            <span className={styles.yearLabel}>年:</span>
+            <select
+              className={styles.yearSelect}
+              value={year}
+              onChange={(e) => handleYearChange(Number(e.target.value))}
+            >
+              {years.map((y) => (
+                <option key={y} value={y}>
+                  {y}年
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
     </div>
   );
 }

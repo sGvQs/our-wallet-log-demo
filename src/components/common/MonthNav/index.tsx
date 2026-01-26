@@ -8,10 +8,11 @@ export function MonthNav() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { month: activeMonth, setMonth } = useMonth();
-  
+
   // Hide on settings and budget pages
   if (pathname.includes('/settings')) return null;
   if (pathname.includes('/budget')) return null;
+  if(searchParams.toString().includes("view=yearly")) return null;
 
   // Default to current month if not specified
   const now = new Date();

@@ -71,6 +71,7 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
 
   const isRecurring = useWatch({ control, name: 'isRecurring' });
   const startMonth = useWatch({ control, name: 'month' });
+  const endMonth = useWatch({ control, name: 'endMonth' }); // 追加
 
   const onSubmit = handleSubmit((data: BudgetFormData) => {
     startTransition(async () => {
@@ -149,7 +150,7 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
           </select>
           {errors.endMonth && <p className={styles.error}>{errors.endMonth.message}</p>}
           <p className={styles.hint}>
-            {startMonth}月〜{useWatch({ control, name: 'endMonth' }) ?? 12}月の{(useWatch({ control, name: 'endMonth' }) ?? 12) - startMonth + 1}ヶ月分を一括登録します
+            {startMonth}月〜{endMonth ?? 12}月の{(endMonth ?? 12) - startMonth + 1}ヶ月分を一括登録します
           </p>
         </div>
       )}
