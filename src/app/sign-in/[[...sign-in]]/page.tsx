@@ -12,7 +12,7 @@ export default function Page() {
           <HyperText>WALLET</HyperText>
           <HyperText>LOG</HyperText>
         </div>
-        <h2 className={styles.subtitle}>同棲やシェアハウス用の家計簿アプリ</h2>
+        <h2 className={styles.subtitle}>個人や同棲用の家計簿アプリ</h2>
       </div>
       <RetroGrid angle={80} cellSize={10} />
       <SignIn />
