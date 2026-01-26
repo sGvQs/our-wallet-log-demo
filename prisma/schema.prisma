@@ -120,15 +120,19 @@ model PersonalExpense {
 }
 
 model PersonalBudget {
-  id        Int             @id @default(autoincrement())
-  userId      Int      
-  user        User     @relation(fields: [userId], references: [id])
-  amount    Int
-  targetMonth Int
-  targetYear Int
-  description String?
-  who String?
-  category  PersonalExpenseCategory
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               Int                     @id @default(autoincrement())
+  userId           Int
+  user             User                    @relation(fields: [userId], references: [id])
+  amount           Int
+  targetMonth      Int
+  targetYear       Int
+  description      String?
+  who              String?
+  category         PersonalExpenseCategory
+  recurringGroupId String?                 // 一括作成時のグループ識別子 (UUID)
+  isRecurring      Boolean                 @default(false) // 繰り返し設定フラグ
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+
+  @@index([userId, recurringGroupId])
 }

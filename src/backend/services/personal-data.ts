@@ -160,3 +160,129 @@ export const getPersonalDashboardData = cache(async (month: string) => {
     budgetUsedPercent: totalBudget > 0 ? Math.round((totalExpenses / totalBudget) * 100) : 0,
   };
 });
+
+// Category budget vs expense comparison for a month
+export type CategoryBudgetComparison = {
+  category: PersonalExpenseCategory;
+  budgetAmount: number;
+  expenseAmount: number;
+  expenseCount: number;
+  usedPercent: number | null;
+  isOverBudget: boolean;
+  hasBudget: boolean;
+};
+
+export const getPersonalCategoryBudgetComparison = cache(async (month: string): Promise<CategoryBudgetComparison[] | null> => {
+  const user = await getAuthenticatedUser();
+  if (!user) return null;
+
+  const [year, m] = month.split('-').map(Number);
+
+  const [budgets, categorySummary] = await Promise.all([
+    getPersonalBudget(year, m),
+    getPersonalCategorySummary(month),
+  ]);
+
+  if (!budgets || !categorySummary) return null;
+
+  // Get all categories except ALL
+  const allCategories = Object.values(PersonalExpenseCategory).filter(c => c !== 'ALL');
+
+  const comparison = allCategories
+    .map(category => {
+      const budget = budgets.find(b => b.category === category);
+      const expense = categorySummary.find(e => e.category === category);
+
+      const budgetAmount = budget?.amount ?? 0;
+      const expenseAmount = expense?.total ?? 0;
+      const expenseCount = expense?.count ?? 0;
+
+      return {
+        category,
+        budgetAmount,
+        expenseAmount,
+        expenseCount,
+        usedPercent: budgetAmount > 0 ? Math.round((expenseAmount / budgetAmount) * 100) : null,
+        isOverBudget: budgetAmount > 0 && expenseAmount > budgetAmount,
+        hasBudget: budgetAmount > 0,
+      };
+    })
+    .filter(c => c.budgetAmount > 0 || c.expenseAmount > 0)
+    .sort((a, b) => {
+      // Sort: over budget first, then by used percent desc, then by expense amount desc
+      if (a.isOverBudget && !b.isOverBudget) return -1;
+      if (!a.isOverBudget && b.isOverBudget) return 1;
+      if (a.usedPercent !== null && b.usedPercent !== null) {
+        return b.usedPercent - a.usedPercent;
+      }
+      return b.expenseAmount - a.expenseAmount;
+    });
+
+  return comparison;
+});
+
+// Yearly dashboard data
+export const getPersonalDashboardDataYearly = cache(async (year: number) => {
+  const user = await getAuthenticatedUser();
+  if (!user) return null;
+
+  // Get all budgets for the year
+  const budgets = await getPersonalBudgetsForYear(year);
+  if (!budgets) return null;
+
+  // Get all expenses for the year
+  const startDate = new Date(year, 0, 1);
+  const endDate = new Date(year, 11, 31, 23, 59, 59, 999);
+
+  const expenses = await prisma.personalExpense.findMany({
+    where: {
+      userId: user.id,
+      date: {
+        gte: startDate,
+        lte: endDate,
+      },
+    },
+  });
+
+  // Calculate yearly totals
+  const yearlyTotalBudget = budgets.reduce((sum, b) => sum + b.amount, 0);
+  const yearlyTotalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+
+  // Calculate monthly data
+  const monthlyData = Array.from({ length: 12 }, (_, i) => {
+    const month = i + 1;
+    const monthBudget = budgets
+      .filter(b => b.targetMonth === month)
+      .reduce((sum, b) => sum + b.amount, 0);
+    const monthExpenses = expenses
+      .filter(e => e.date.getMonth() === i)
+      .reduce((sum, e) => sum + e.amount, 0);
+
+    return {
+      month,
+      budget: monthBudget,
+      expenses: monthExpenses,
+    };
+  });
+
+  // Calculate category summary for the year
+  const categorySummary: Record<string, { category: PersonalExpenseCategory; total: number; count: number }> = {};
+  for (const expense of expenses) {
+    const cat = expense.category;
+    if (!categorySummary[cat]) {
+      categorySummary[cat] = { category: cat, total: 0, count: 0 };
+    }
+    categorySummary[cat].total += expense.amount;
+    categorySummary[cat].count += 1;
+  }
+
+  return {
+    year,
+    yearlyTotalBudget,
+    yearlyTotalExpenses,
+    yearlyRemaining: yearlyTotalBudget - yearlyTotalExpenses,
+    yearlyUsedPercent: yearlyTotalBudget > 0 ? Math.round((yearlyTotalExpenses / yearlyTotalBudget) * 100) : 0,
+    monthlyData,
+    categorySummary: Object.values(categorySummary).sort((a, b) => b.total - a.total),
+  };
+});

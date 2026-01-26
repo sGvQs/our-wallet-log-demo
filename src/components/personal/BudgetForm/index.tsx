@@ -1,11 +1,11 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
 import { z } from 'zod';
 import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
-import { createPersonalBudgets } from '@/backend/actions/personal-budget';
+import { createPersonalBudgets, createBulkPersonalBudgets } from '@/backend/actions/personal-budget';
 import { PersonalExpenseCategory } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
 import styles from '../shared/Form.module.css';
@@ -23,6 +23,17 @@ const budgetSchema = z.object({
   month: z.number().min(1).max(12),
   who: z.string().max(8, '名前は8文字以下で入力してください'),
   description: z.string().max(8, '備考は8文字以下で入力してください'),
+  isRecurring: z.boolean(),
+  endMonth: z.number().min(1).max(12),
+}).refine((data) => {
+  // If recurring, endMonth must be >= month
+  if (data.isRecurring) {
+    return data.endMonth >= data.month;
+  }
+  return true;
+}, {
+  message: '終了月は開始月以降を選択してください',
+  path: ['endMonth'],
 });
 
 type BudgetFormData = z.infer<typeof budgetSchema>;
@@ -45,6 +56,7 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
     formState: { errors },
     setError,
     reset,
+    control,
   } = useForm<BudgetFormData>({
     resolver: zodResolver(budgetSchema),
     defaultValues: {
@@ -52,18 +64,38 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
       category: 'FOOD',
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
+      isRecurring: false,
+      endMonth: 12,
     },
   });
 
+  const isRecurring = useWatch({ control, name: 'isRecurring' });
+  const startMonth = useWatch({ control, name: 'month' });
+
   const onSubmit = handleSubmit((data: BudgetFormData) => {
     startTransition(async () => {
-      const result = await createPersonalBudgets(data.year, {
-        month: data.month,
-        category: data.category,
-        amount: data.amount,
-        who: data.who,
-        description: data.description,
-      });
+      let result;
+      
+      if (data.isRecurring && data.endMonth !== undefined) {
+        // Create bulk budgets
+        result = await createBulkPersonalBudgets(data.year, {
+          startMonth: data.month,
+          endMonth: data.endMonth,
+          category: data.category,
+          amount: data.amount,
+          who: data.who,
+          description: data.description,
+        });
+      } else {
+        // Create single budget
+        result = await createPersonalBudgets(data.year, {
+          month: data.month,
+          category: data.category,
+          amount: data.amount,
+          who: data.who,
+          description: data.description,
+        });
+      }
 
       if (result?.error) {
         setError('root', { message: result.error });
@@ -83,7 +115,7 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
   return (
     <form onSubmit={onSubmit} className={styles.form}>
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>対象月</label>
+        <label className={styles.label}>{isRecurring ? '開始月' : '対象月'}</label>
         <div className={styles.monthGrid}>
           <select {...register('year', { valueAsNumber: true })} className={styles.select}>
             {[new Date().getFullYear() - 1, new Date().getFullYear(), new Date().getFullYear() + 1].map((y) => (
@@ -97,6 +129,30 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
           </select>
         </div>
       </div>
+
+      <div className={styles.fieldGroup}>
+        <label className={styles.checkboxLabel}>
+          <input type="checkbox" {...register('isRecurring')} className={styles.checkbox} />
+          <span>毎月繰り返す（固定費）</span>
+        </label>
+      </div>
+
+      {isRecurring && (
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>終了月</label>
+          <select {...register('endMonth', { valueAsNumber: true })} className={styles.select}>
+            {Array.from({ length: 12 }, (_, i) => i + 1)
+              .filter((m) => m >= startMonth)
+              .map((m) => (
+                <option key={m} value={m}>{m}月まで</option>
+              ))}
+          </select>
+          {errors.endMonth && <p className={styles.error}>{errors.endMonth.message}</p>}
+          <p className={styles.hint}>
+            {startMonth}月〜{useWatch({ control, name: 'endMonth' }) ?? 12}月の{(useWatch({ control, name: 'endMonth' }) ?? 12) - startMonth + 1}ヶ月分を一括登録します
+          </p>
+        </div>
+      )}
 
       <div className={styles.fieldGroup}>
         <label className={styles.label}>カテゴリー</label>

@@ -1,0 +1,106 @@
+.header {
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.yearBadge {
+  display: inline-block;
+  background: var(--color-primary-personal);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.progressWrapper {
+  margin-bottom: 1.5rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.statValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.remainingBox {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remainingBoxPositive {
+  background: rgba(94, 138, 204, 0.1);
+}
+
+.remainingBoxNegative {
+  background: rgba(231, 76, 60, 0.1);
+}
+
+.remainingLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.remainingValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.remainingValuePositive {
+  color: var(--color-primary-personal);
+}
+
+.remainingValueNegative {
+  color: #e74c3c;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.emptyTitle {
+  margin-bottom: 0.5rem;
+}
+
+.emptyDescription {
+  font-size: 0.85rem;
+}
+
+.emptyExpenses {
+  margin-top: 1.5rem;
+}
+
+.emptyExpensesLabel {
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.emptyExpensesValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}

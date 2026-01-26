@@ -1,0 +1,139 @@
+.title {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.chartContainer {
+  position: relative;
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25rem;
+  height: 200px;
+  padding-bottom: 2rem;
+}
+
+.monthColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+.barsContainer {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 0;
+}
+
+.bar {
+  flex: 1;
+  max-width: 12px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: height 0.3s ease;
+  position: relative;
+}
+
+.barBudget {
+  background-color: var(--color-border);
+}
+
+.barExpense {
+  background-color: var(--color-primary-personal);
+}
+
+.barOver {
+  background-color: #e74c3c;
+}
+
+.monthLabel {
+  position: absolute;
+  bottom: 0;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  transform: translateY(100%);
+  padding-top: 0.5rem;
+}
+
+.currentMonth {
+  color: var(--color-primary-personal);
+  font-weight: 600;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.legendBudget {
+  background-color: var(--color-border);
+}
+
+.legendExpense {
+  background-color: var(--color-primary-personal);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--color-text-muted);
+}
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 100;
+  font-size: 0.75rem;
+}
+
+.tooltipTitle {
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 0.25rem;
+}
+
+.tooltipRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--color-text-muted);
+}
+
+.tooltipValue {
+  font-weight: 500;
+  color: var(--color-text-main);
+}

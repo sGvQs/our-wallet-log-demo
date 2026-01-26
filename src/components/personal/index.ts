@@ -13,3 +13,8 @@ export { BudgetActions } from './BudgetActions';
 export { SummaryCard } from './SummaryCard';
 export { CategoryBreakdown } from './CategoryBreakdown';
 export { RecentExpenses } from './RecentExpenses';
+export { CategoryBudgetCard } from './CategoryBudgetCard';
+export { ViewToggle } from './ViewToggle';
+export type { ViewMode } from './ViewToggle';
+export { YearlySummaryCard } from './YearlySummaryCard';
+export { MonthlyTrendChart } from './MonthlyTrendChart';

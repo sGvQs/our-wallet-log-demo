@@ -1,0 +1,147 @@
+.title {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.labelGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.colorDot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.categoryName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.statusBadge {
+  font-size: 0.7rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.statusOverBudget {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+}
+
+.statusWarning {
+  background: rgba(243, 156, 18, 0.15);
+  color: #f39c12;
+}
+
+.statusNoBudget {
+  background: var(--color-bg-app);
+  color: var(--color-text-muted);
+}
+
+.percentText {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.percentNormal {
+  color: var(--color-text-main);
+}
+
+.percentWarning {
+  color: #f39c12;
+}
+
+.percentOver {
+  color: #e74c3c;
+}
+
+.barContainer {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: 0.375rem;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.barNormal {
+  background-color: var(--color-primary-personal);
+}
+
+.barWarning {
+  background-color: #f39c12;
+}
+
+.barOver {
+  background-color: #e74c3c;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.expenseAmount {
+  font-weight: 500;
+}
+
+.budgetAmount {
+  color: var(--color-text-muted);
+}
+
+.remainingPositive {
+  color: var(--color-primary-personal);
+  font-weight: 600;
+}
+
+.remainingNegative {
+  color: #e74c3c;
+  font-weight: 600;
+}

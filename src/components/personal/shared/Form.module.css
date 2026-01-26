@@ -160,3 +160,59 @@
   cursor: not-allowed;
   opacity: 0.7;
 }
+
+/* Checkbox styles */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+}
+
+.checkbox {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-app);
+  cursor: pointer;
+  accent-color: var(--color-primary-personal);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 0.5rem;
+}
+
+/* Radio group styles */
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s;
+}
+
+.radioLabel:hover {
+  background: var(--bg-hover);
+}
+
+.radio {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--color-primary-personal);
+  cursor: pointer;
+}
