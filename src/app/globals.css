@@ -94,7 +94,7 @@ button {
 
 .app-side-header {
   display: flex;
-  gap: 8px;
+  gap: 12px;
 }
 
 .app-main {
