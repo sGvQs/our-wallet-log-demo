@@ -6,103 +6,109 @@ import { revalidatePath } from 'next/cache';
 
 // Helper to generate a random 6-character code
 function generateInviteCode() {
-  return Math.random().toString(36).substring(2, 8).toUpperCase();
+    return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
 export async function createGroup(prevState: any, formData: FormData) {
-  const user = await getAuthenticatedUser();
-  if (!user) return { error: 'Not authenticated' };
+    const user = await getAuthenticatedUser();
+    if (!user) return { error: 'Not authenticated' };
 
-  // Check if user is already in a group
-  const userWithGroups = await prisma.user.findUnique({
-      where: { id: user.id },
-      include: { groups: true }
-  });
+    // Check if user is already in a group
+    const userWithGroups = await prisma.user.findUnique({
+        where: { id: user.id },
+        include: { groups: true }
+    });
 
-  if (userWithGroups?.groups.length && userWithGroups.groups.length > 0) {
-      return { error: 'すでに他のチームに参加しています。新しいチームを作成するには、現在のチームを脱退してください。' };
-  }
+    if (userWithGroups?.groups.length && userWithGroups.groups.length > 0) {
+        return { error: 'すでに他のチームに参加しています。新しいチームを作成するには、現在のチームを脱退してください。' };
+    }
 
-  const name = formData.get('name') as string;
-  if (!name) return { error: 'グループ名を入力してください' };
+    const name = formData.get('name') as string;
+    if (!name) return { error: 'グループ名を入力してください' };
 
-  try {
-    const code = generateInviteCode();
-    
-    // Create group, set creator
-    const group = await prisma.group.create({
-        data: {
-            name,
-            inviteCode: code,
-            creatorId: user.id,
-            users: {
-                connect: { id: user.id }
+    try {
+        const code = generateInviteCode();
+
+        // Create group, set creator
+        const group = await prisma.group.create({
+            data: {
+                name,
+                inviteCode: code,
+                creatorId: user.id,
+                users: {
+                    connect: { id: user.id }
+                }
             }
-        }
-    });
+        });
 
-    // Add to CreatedGroup table
-    await prisma.createdGroup.create({
-        data: {
-            userId: user.id,
-            groupId: group.id
-        }
-    });
-    
-  } catch (e) {
-    return { error: "登録に失敗しました" };
-  }
+        // Add to CreatedGroup table
+        await prisma.createdGroup.create({
+            data: {
+                userId: user.id,
+                groupId: group.id
+            }
+        });
 
-  revalidatePath('/group');
-  return { success: true };
+    } catch (e) {
+        return { error: "登録に失敗しました" };
+    }
+
+    revalidatePath('/group');
+    return { success: true };
 }
 
 export async function joinGroup(prevState: any, formData: FormData) {
-  const user = await getAuthenticatedUser();
-  if (!user) return { error: 'Not authenticated' };
+    const user = await getAuthenticatedUser();
+    if (!user) return { error: 'Not authenticated' };
 
-  const inviteCode = formData.get('inviteCode') as string;
-  if (!inviteCode) return { error: '招待コードを入力してください' };
+    const inviteCode = formData.get('inviteCode') as string;
+    if (!inviteCode) return { error: '招待コードを入力してください' };
 
-  // Check if user is already in a group
-  const userWithGroups = await prisma.user.findUnique({
-      where: { id: user.id },
-      include: { groups: true }
-  });
+    // Check if user is already in a group
+    const userWithGroups = await prisma.user.findUnique({
+        where: { id: user.id },
+        include: { groups: true }
+    });
 
-  if (userWithGroups?.groups.length && userWithGroups.groups.length > 0) {
-      return { error: 'すでに他のチームに参加しています。別のチームに参加するには、現在のチームを脱退してください。' };
-  }
+    if (userWithGroups?.groups.length && userWithGroups.groups.length > 0) {
+        return { error: 'すでに他のチームに参加しています。別のチームに参加するには、現在のチームを脱退してください。' };
+    }
 
-  const group = await prisma.group.findUnique({
-    where: { inviteCode }
-  });
+    const group = await prisma.group.findUnique({
+        where: { inviteCode },
+        include: { users: true }  // メンバー数をカウントするため
+    });
 
-  if (!group) {
-    return { error: '無効な招待コードです' };
-  }
+    if (!group) {
+        return { error: '無効な招待コードです' };
+    }
 
-  // Connect user to group and remove from past members if applicable
-  await prisma.$transaction([
-      prisma.group.update({
-          where: { id: group.id },
-          data: {
-              users: {
-                  connect: { id: user.id }
-              }
-          }
-      }),
-      // Remove from PastGroup if exists (clean up history logic)
-      prisma.pastGroup.deleteMany({
-          where: {
-              userId: user.id,
-              groupId: group.id
-          }
-      })
-  ]);
+    // 2名制限チェック
+    if (group.users.length >= 2) {
+        return { error: 'このチームは既に2名参加しています。これ以上追加できません。' };
+    }
 
-  revalidatePath('/group');
-  return { success: true };
+    // Connect user to group and remove from past members if applicable
+    await prisma.$transaction([
+        prisma.group.update({
+            where: { id: group.id },
+            data: {
+                users: {
+                    connect: { id: user.id }
+                }
+            }
+        }),
+        // Remove from PastGroup if exists (clean up history logic)
+        prisma.pastGroup.deleteMany({
+            where: {
+                userId: user.id,
+                groupId: group.id
+            }
+        })
+    ]);
+
+    revalidatePath('/group');
+    return { success: true };
 }
 
 export async function leaveGroup(groupId: string) {
@@ -173,6 +179,18 @@ export async function joinCreatedGroup(groupId: string) {
         return { error: 'すでに他のチームに参加しています。新しいチームに参加するには、現在のチームを脱退してください。' };
     }
 
+    // 2名制限チェック
+    const group = await prisma.group.findUnique({
+        where: { id: groupId },
+        include: { users: true }
+    });
+
+    if (!group) return { error: 'チームが見つかりません' };
+
+    if (group.users.length >= 2) {
+        return { error: 'このチームは既に2名参加しています。これ以上追加できません。' };
+    }
+
     await prisma.$transaction([
         prisma.group.update({
             where: { id: groupId },
@@ -190,5 +208,37 @@ export async function joinCreatedGroup(groupId: string) {
     revalidatePath('/group');
     revalidatePath('/personal');
     revalidatePath('/settings');
+    return { success: true };
+}
+
+export async function updateSplitRatio(groupId: string, splitRatio: number) {
+    const user = await getAuthenticatedUser();
+    if (!user) return { error: 'Not authenticated' };
+
+    // バリデーション: 0-100の範囲
+    if (splitRatio < 0 || splitRatio > 100) {
+        return { error: '割合は0〜100の間で設定してください' };
+    }
+
+    const group = await prisma.group.findUnique({
+        where: { id: groupId },
+        include: { users: true }
+    });
+
+    if (!group) return { error: 'チームが見つかりません' };
+
+    // 参加していないユーザーは変更不可
+    const isMember = group.users.some(u => u.id === user.id);
+    if (!isMember) {
+        return { error: '権限がありません' };
+    }
+
+    await prisma.group.update({
+        where: { id: groupId },
+        data: { splitRatio }
+    });
+
+    revalidatePath('/family/group');
+    revalidatePath('/family/settings');
     return { success: true };
 }

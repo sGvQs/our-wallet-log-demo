@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Group" ADD COLUMN     "splitRatio" INTEGER NOT NULL DEFAULT 50;

@@ -169,3 +169,32 @@
   color: var(--color-text-muted);
   margin-bottom: 2rem;
 }
+
+.ratioCard {
+  border: 2px solid var(--color-primary-personal);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.ratioTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.ratioDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.ratioSeparator {
+  color: var(--color-text-muted);
+}
+
+.targetAmount {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}

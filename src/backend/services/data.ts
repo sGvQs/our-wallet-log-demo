@@ -122,10 +122,22 @@ export async function getGroupSettingsData() {
   const userData = await prisma.user.findUnique({
     where: { id: user.id },
     include: {
-      groups: true,
+      groups: {
+        include: {
+          users: {
+            select: { id: true, name: true, email: true }
+          }
+        }
+      },
       createdGroups: {
         include: {
-          group: true
+          group: {
+            include: {
+              users: {
+                select: { id: true, name: true, email: true }
+              }
+            }
+          }
         }
       },
       pastGroups: {
@@ -138,3 +150,4 @@ export async function getGroupSettingsData() {
 
   return userData;
 }
+

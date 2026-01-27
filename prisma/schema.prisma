@@ -46,6 +46,7 @@ model Group {
   createdAt   DateTime      @default(now())
   users       User[]
   creatorId   Int
+  splitRatio  Int           @default(50)  // 作成者の負担割合 (0-100)、パートナー = 100 - splitRatio
   createdRecords CreatedGroup[]
   pastRecords    PastGroup[]
   expenses       Expense[]

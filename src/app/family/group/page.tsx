@@ -58,16 +58,35 @@ async function GroupSidebarSection({ currentMonth, category }: { currentMonth: s
   const expenses = await getGroupExpenses(currentMonth, category);
   const totalAmount = expenses.reduce((sum: number, exp: { amount: number }) => sum + exp.amount, 0);
 
-  const members: { userId: number; user: { name: string } }[] = group.users.map((u: { id: number; name: string | null }) => ({
+  const members: { userId: number; user: { name: string | null } }[] = group.users.map((u: { id: number; name: string | null }) => ({
     userId: u.id,
-    user: { name: u.name || 'Unknown' }
+    user: { name: u.name }
   }));
-  const { balances, settlements } = calculateSettlements(expenses, members);
+
+  // Use custom split ratio from group settings
+  const splitRatio = (group as any).splitRatio ?? 50;
+  const creatorId = group.creatorId;
+
+  const { balances, settlements } = calculateSettlements(expenses, members, creatorId, splitRatio);
 
   const getName = (id: number) => members.find(m => m.userId === id)?.user.name || 'Unknown';
+  const creatorName = getName(creatorId);
+  const partnerRatio = 100 - splitRatio;
 
   return (
     <div className="dashboard-sidebar">
+      {/* Split Ratio Display (if not 50:50) */}
+      {splitRatio !== 50 && (
+        <Card className={styles.ratioCard}>
+          <h3 className={styles.ratioTitle}>⚖️ 負担割合</h3>
+          <div className={styles.ratioDisplay}>
+            <span>{creatorName}: {splitRatio}%</span>
+            <span className={styles.ratioSeparator}>:</span>
+            <span>{partnerRatio}%</span>
+          </div>
+        </Card>
+      )}
+
       <Card className={styles.settlementCard}>
         <h3 className={styles.settlementTitle}>
           <span>💰</span> 精算プラン ({currentMonth.replace('-', '年')}月)
@@ -84,7 +103,9 @@ async function GroupSidebarSection({ currentMonth, category }: { currentMonth: s
                 <div className={styles.settlementAmount}>¥{s.amount.toLocaleString()}</div>
               </div>
             ))}
-            <p className={styles.settlementHint}>これを支払えば平均になります</p>
+            <p className={styles.settlementHint}>
+              {splitRatio === 50 ? 'これを支払えば平均になります' : `これを支払えば${splitRatio}:${partnerRatio}割になります`}
+            </p>
           </div>
         ) : (
           <p className={styles.noSettlement}>精算は不要です 🎉</p>
@@ -109,6 +130,7 @@ async function GroupSidebarSection({ currentMonth, category }: { currentMonth: s
               </div>
               <div className={styles.balanceDetails}>
                 <div className={styles.paidAmount}>払った額: ¥{b.paid.toLocaleString()}</div>
+                <div className={styles.targetAmount}>負担額: ¥{b.targetAmount.toLocaleString()}</div>
                 <div className={`${styles.balance} ${b.balance >= 0 ? styles.balancePositive : styles.balanceNegative}`}>
                   {b.balance >= 0 ? '+' : ''}{b.balance.toLocaleString()}
                 </div>

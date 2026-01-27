@@ -3,3 +3,5 @@
 export { FamilyNav } from './FamilyNav';
 export { ExpenseList } from './ExpenseList';
 export { GroupManager } from './GroupManager';
+export { MemberPreview } from './MemberPreview';
+export { SplitRatioSlider } from './SplitRatioSlider';
