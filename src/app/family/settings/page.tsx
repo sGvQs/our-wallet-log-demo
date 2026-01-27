@@ -23,8 +23,6 @@ export default async function SettingsPage() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.pageTitle}>チーム設定</h1>
-
       {/* Joined Teams - Now with Member Preview and Split Ratio */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>参加中のチーム</h2>
@@ -60,6 +58,13 @@ export default async function SettingsPage() {
                       partnerName={partner?.name || partner?.email?.split('@')[0] || 'パートナー'}
                     />
                   )}
+
+                  <SplitRatioSlider
+                    groupId={group.id}
+                    initialRatio={group.splitRatio ?? 50}
+                    creatorName={creator?.name || creator?.email?.split('@')[0] || 'オーナー'}
+                    partnerName={partner?.name || partner?.email?.split('@')[0] || 'パートナー'}
+                  />
 
                   <div className={styles.cardFooter}>
                     <div className={styles.inviteCode}>

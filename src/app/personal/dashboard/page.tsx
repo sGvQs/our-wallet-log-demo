@@ -41,7 +41,6 @@ export default async function PersonalDashboardPage(
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.pageTitle}>個人用ダッシュボード</h1>
         <ViewToggle mode={viewMode} year={currentYear} />
       </div>
 

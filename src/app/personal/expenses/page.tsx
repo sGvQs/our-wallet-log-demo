@@ -16,7 +16,6 @@ export default async function PersonalExpensesPage(
     <div className="dashboard-grid">
       <div className="dashboard-main">
         <div className="dashboard-header">
-          <h2 className={styles.headerTitle}>個人用支出一覧</h2>
           <FilterBar category={PERSONAL_CATEGORIES} />
         </div>
 

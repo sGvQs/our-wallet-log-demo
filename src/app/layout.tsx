@@ -20,8 +20,35 @@ const primaryFont = M_PLUS_Rounded_1c({
 });
 
 export const metadata: Metadata = {
-  title: 'Our Wallet Log',
-  description: 'Shared wallet expense tracking',
+  title: 'Our Wallet Log | 個人も同棲もこれひとつ。カップル・夫婦のためのスマート家計簿',
+  description: '「どっちがいくら払ったっけ？」をなくしましょう。生活費の折半ルールを6:4など自由にカスタマイズ可能。パートナーとの家計管理を透明にしつつ、自分のお小遣い管理もこれ一つで完結します。',
+  keywords: [
+    "家計簿",
+    "家計管理",
+    "同棲",
+    "カップル",
+    "夫婦",
+    "割り勘",
+    "支出管理",
+    "予算管理",
+    "資産管理",
+  ],
+  openGraph: {
+    title: 'Our Wallet Log | 個人も同棲もこれひとつ。カップル・夫婦のためのスマート家計簿',
+    description: '「どっちがいくら払ったっけ？」をなくしましょう。生活費の折半ルールを6:4など自由にカスタマイズ可能。パートナーとの家計管理を透明にしつつ、自分のお小遣い管理もこれ一つで完結します。',
+    url: 'https://our-wallet-log.vercel.app/',
+    siteName: 'Our Wallet Log',
+    images: [
+      {
+        url: 'https://our-wallet-log.vercel.app/ogp.png',
+        width: 1200,
+        height: 630,
+        alt: 'Our Wallet Log',
+      },
+    ],
+    locale: 'ja_JP',
+    type: 'website',
+  },
 }
 
 
@@ -48,7 +75,7 @@ export default function RootLayout({
                         blinkCursor={true}
                         pauseDelay={5000}
                         className='h-20 flex justify-center'
-                        />
+                      />
                     </h1>
                     <div className="app-side-header">
                       <ModeSwitch />

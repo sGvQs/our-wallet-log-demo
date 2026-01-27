@@ -16,7 +16,6 @@ export default async function GroupDashboardPage(props: { searchParams: Promise<
     <div className="dashboard-grid">
       <div className="dashboard-main">
         <div className="dashboard-header">
-          <h2 className={styles.headerTitle}>チームの支出一覧</h2>
           <FilterBar category={FAMILY_CATEGORIES} />
         </div>
 

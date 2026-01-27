@@ -26,7 +26,6 @@ export default async function PersonalBudgetPage(
     <div className="dashboard-grid">
       <div className="dashboard-main">
         <div className="dashboard-header">
-          <h2 className={styles.headerTitle}>予算設定</h2>
           <YearSelector year={year} month={month} />
         </div>
 
