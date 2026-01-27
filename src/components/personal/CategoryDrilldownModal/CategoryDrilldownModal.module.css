@@ -1,0 +1,330 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal {
+    background: var(--bg-main);
+    border-radius: 1rem;
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    background: var(--bg-main);
+    z-index: 1;
+}
+
+.titleGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.colorDot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.yearBadge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-sub);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.closeButton {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg-sub);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.closeButton:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+/* Summary Grid */
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.summaryCard {
+    background: var(--color-bg-secondary);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.summaryLabel {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.25rem;
+}
+
+.summaryValue {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.summaryPositive .summaryValue {
+    color: #27ae60;
+}
+
+.summaryNegative .summaryValue {
+    color: #e74c3c;
+}
+
+/* Chart Section */
+.chartSection {
+    padding: 0 1.5rem 1.5rem;
+}
+
+.sectionTitle {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem 0;
+}
+
+.chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 150px;
+    gap: 0.25rem;
+    background: var(--color-bg-secondary);
+    border-radius: 0.75rem;
+    padding: 1rem 0.5rem 0.5rem;
+}
+
+.monthColumn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    height: 100%;
+}
+
+.barsContainer {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2px;
+    width: 100%;
+}
+
+.bar {
+    width: 8px;
+    min-height: 2px;
+    border-radius: 2px 2px 0 0;
+    transition: height 0.3s ease;
+}
+
+.barBudget {
+    background: var(--bg-sub);
+    opacity: 0.6;
+}
+
+.barExpense {
+    /* Color is set inline via style prop */
+    border-radius: 2px 2px 0 0;
+}
+
+.barOver {
+    background: #e74c3c !important;
+}
+
+.monthLabel {
+    font-size: 0.625rem;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.legendDot {
+    color: var(--text-muted);
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+.legendBudget {
+    background: var(--bg-sub);
+}
+
+/* Table Section */
+.tableSection {
+    padding: 0 1.5rem 1.5rem;
+}
+
+.tableWrapper {
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    background: var(--color-bg-secondary);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem 0.5rem;
+    text-align: right;
+}
+
+.table th:first-child,
+.table td:first-child {
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.table th:last-child,
+.table td:last-child {
+    padding-right: 1rem;
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.75rem;
+}
+
+.table td {
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.emptyRow td {
+    color: var(--color-text-tertiary);
+}
+
+.noData {
+    text-align: center !important;
+    font-style: italic;
+}
+
+.positive {
+    color: #27ae60;
+}
+
+.negative {
+    color: #e74c3c;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+
+    .table th,
+    .table td {
+        padding: 1rem 0.5rem;
+        white-space: nowrap;
+    }
+
+    .summaryGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal {
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .chart {
+        height: 120px;
+    }
+
+    .bar {
+        width: 6px;
+    }
+}

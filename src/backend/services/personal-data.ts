@@ -122,7 +122,7 @@ export const getPersonalCategorySummary = cache(async (month: string) => {
 export const getPersonalBudgetTotal = cache(async (year: number, month: number) => {
   const budgets = await getPersonalBudget(year, month);
   if (!budgets) return 0;
-  
+
   return budgets.reduce((sum, b) => sum + b.amount, 0);
 });
 
@@ -130,7 +130,7 @@ export const getPersonalBudgetTotal = cache(async (year: number, month: number) 
 export const getPersonalExpenseTotal = cache(async (month: string) => {
   const expenses = await getPersonalExpensesData(month);
   if (!expenses) return 0;
-  
+
   return expenses.reduce((sum, e) => sum + e.amount, 0);
 });
 
@@ -286,3 +286,108 @@ export const getPersonalDashboardDataYearly = cache(async (year: number) => {
     categorySummary: Object.values(categorySummary).sort((a, b) => b.total - a.total),
   };
 });
+
+// Yearly category budget vs expense comparison
+export type YearlyCategoryBudgetComparison = {
+  category: PersonalExpenseCategory;
+  yearlyBudgetAmount: number;      // 年間予算（12ヶ月合計）
+  yearlyExpenseAmount: number;     // 年間支出合計
+  yearlyExpenseCount: number;      // 年間取引件数
+  usedPercent: number | null;      // 達成率（予算がない場合はnull）
+  difference: number;              // 差額（+ = 残り / - = 超過）
+  isOverBudget: boolean;           // 予算超過フラグ
+  hasBudget: boolean;              // 予算設定有無
+  monthlyBreakdown: {              // 月別内訳（ドリルダウン用）
+    month: number;
+    budgetAmount: number;
+    expenseAmount: number;
+  }[];
+};
+
+export const getPersonalYearlyCategoryComparison = cache(
+  async (year: number): Promise<YearlyCategoryBudgetComparison[] | null> => {
+    const user = await getAuthenticatedUser();
+    if (!user) return null;
+
+    // 年間の全予算を取得
+    const budgets = await prisma.personalBudget.findMany({
+      where: {
+        userId: user.id,
+        targetYear: year,
+      },
+    });
+
+    // 年間の全支出を取得
+    const startDate = new Date(year, 0, 1);
+    const endDate = new Date(year, 11, 31, 23, 59, 59, 999);
+
+    const expenses = await prisma.personalExpense.findMany({
+      where: {
+        userId: user.id,
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+    });
+
+    // カテゴリーごとに集計（ALLを除外）
+    const allCategories = Object.values(PersonalExpenseCategory)
+      .filter(c => c !== 'ALL');
+
+    const comparison = allCategories.map(category => {
+      // 月別の予算・支出を計算
+      const monthlyBreakdown = Array.from({ length: 12 }, (_, i) => {
+        const month = i + 1;
+        const monthBudget = budgets
+          .filter(b => b.category === category && b.targetMonth === month)
+          .reduce((sum, b) => sum + b.amount, 0);
+        const monthExpenses = expenses
+          .filter(e => e.category === category && e.date.getMonth() === i)
+          .reduce((sum, e) => sum + e.amount, 0);
+
+        return {
+          month,
+          budgetAmount: monthBudget,
+          expenseAmount: monthExpenses,
+        };
+      });
+
+      // 年間合計を計算
+      const yearlyBudgetAmount = monthlyBreakdown.reduce(
+        (sum, m) => sum + m.budgetAmount, 0
+      );
+      const yearlyExpenseAmount = monthlyBreakdown.reduce(
+        (sum, m) => sum + m.expenseAmount, 0
+      );
+      const yearlyExpenseCount = expenses
+        .filter(e => e.category === category).length;
+
+      return {
+        category,
+        yearlyBudgetAmount,
+        yearlyExpenseAmount,
+        yearlyExpenseCount,
+        usedPercent: yearlyBudgetAmount > 0
+          ? Math.round((yearlyExpenseAmount / yearlyBudgetAmount) * 100)
+          : null,
+        difference: yearlyBudgetAmount - yearlyExpenseAmount,
+        isOverBudget: yearlyBudgetAmount > 0 && yearlyExpenseAmount > yearlyBudgetAmount,
+        hasBudget: yearlyBudgetAmount > 0,
+        monthlyBreakdown,
+      };
+    })
+      .filter(c => c.yearlyBudgetAmount > 0 || c.yearlyExpenseAmount > 0)
+      .sort((a, b) => {
+        // 予算超過を先頭に、次に達成率降順
+        if (a.isOverBudget && !b.isOverBudget) return -1;
+        if (!a.isOverBudget && b.isOverBudget) return 1;
+        if (a.usedPercent !== null && b.usedPercent !== null) {
+          return b.usedPercent - a.usedPercent;
+        }
+        return b.yearlyExpenseAmount - a.yearlyExpenseAmount;
+      });
+
+    return comparison;
+  }
+);

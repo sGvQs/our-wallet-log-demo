@@ -18,3 +18,5 @@ export { ViewToggle } from './ViewToggle';
 export type { ViewMode } from './ViewToggle';
 export { YearlySummaryCard } from './YearlySummaryCard';
 export { MonthlyTrendChart } from './MonthlyTrendChart';
+export { YearlyCategoryBudgetCard } from './YearlyCategoryBudgetCard';
+export { CategoryDrilldownModal } from './CategoryDrilldownModal';

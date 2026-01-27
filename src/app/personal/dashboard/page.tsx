@@ -3,6 +3,7 @@ import {
   getPersonalDashboardData,
   getPersonalCategoryBudgetComparison,
   getPersonalDashboardDataYearly,
+  getPersonalYearlyCategoryComparison,
 } from '@/backend/services/personal-data';
 import {
   SummaryCard,
@@ -12,6 +13,7 @@ import {
   ViewToggle,
   YearlySummaryCard,
   MonthlyTrendChart,
+  YearlyCategoryBudgetCard,
 } from '@/components/personal';
 import type { ViewMode } from '@/components/personal';
 import { Skeleton } from '@/components/common';
@@ -28,11 +30,11 @@ export default async function PersonalDashboardPage(
   props: { searchParams: Promise<SearchParams> }
 ) {
   const searchParams = await props.searchParams;
-  
+
   // Determine view mode
   const viewMode: ViewMode = searchParams.view === 'yearly' ? 'yearly' : 'monthly';
-  const currentYear = searchParams.year 
-    ? parseInt(searchParams.year, 10) 
+  const currentYear = searchParams.year
+    ? parseInt(searchParams.year, 10)
     : new Date().getFullYear();
   const currentMonth = searchParams.month || new Date().toISOString().slice(0, 7);
 
@@ -91,7 +93,10 @@ async function MonthlyDashboardContent({ currentMonth }: { currentMonth: string 
 }
 
 async function YearlyDashboardContent({ year }: { year: number }) {
-  const data = await getPersonalDashboardDataYearly(year);
+  const [data, categoryComparison] = await Promise.all([
+    getPersonalDashboardDataYearly(year),
+    getPersonalYearlyCategoryComparison(year),
+  ]);
 
   if (!data) {
     return (
@@ -112,6 +117,7 @@ async function YearlyDashboardContent({ year }: { year: number }) {
         yearlyRemaining={data.yearlyRemaining}
         yearlyUsedPercent={data.yearlyUsedPercent}
       />
+      <YearlyCategoryBudgetCard comparisons={categoryComparison ?? []} year={year} />
       <div className={styles.fullWidth}>
         <MonthlyTrendChart monthlyData={data.monthlyData} year={data.year} />
       </div>

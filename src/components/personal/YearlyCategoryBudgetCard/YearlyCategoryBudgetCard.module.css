@@ -1,0 +1,194 @@
+.title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.yearBadge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-sub);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.emptyState {
+    padding: 2rem;
+    text-align: center;
+    color: var(--color-text-tertiary);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.item {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--color-bg-secondary);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.item:hover {
+    background: var(--bg-sub);
+    transform: translateX(2px);
+}
+
+.item:focus {
+    outline: 2px solid var(--color-primary-personal);
+    outline-offset: 2px;
+}
+
+.itemHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.labelGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.colorDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.categoryName {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.statusBadge {
+    font-size: 0.625rem;
+    font-weight: 600;
+    padding: 0.125rem 0.375rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.statusOverBudget {
+    background: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+}
+
+.statusWarning {
+    background: rgba(243, 156, 18, 0.15);
+    color: #f39c12;
+}
+
+.statusGood {
+    background: rgba(39, 174, 96, 0.15);
+    color: #27ae60;
+}
+
+.statusNoBudget {
+    background: var(--bg-sub);
+    color: var(--color-text-tertiary);
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.percentText {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.percentNormal {
+    color: var(--color-primary-personal);
+}
+
+.percentWarning {
+    color: #f39c12;
+}
+
+.percentOver {
+    color: #e74c3c;
+}
+
+.drilldownIcon {
+    font-size: 0.625rem;
+    color: var(--color-text-tertiary);
+    transition: transform 0.15s ease;
+}
+
+.item:hover .drilldownIcon {
+    transform: translateX(2px);
+}
+
+.barContainer {
+    height: 6px;
+    background: var(--bg-sub);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.barFill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.barNormal {
+    background: var(--color-primary-personal);
+}
+
+.barWarning {
+    background: #f39c12;
+}
+
+.barOver {
+    background: #e74c3c;
+}
+
+.detailRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+}
+
+.expenseAmount {
+    color: var(--color-text-primary);
+    font-weight: 500;
+}
+
+.budgetAmount {
+    color: var(--color-text-tertiary);
+    font-weight: 400;
+}
+
+.remainingPositive {
+    color: #27ae60;
+    font-weight: 500;
+}
+
+.remainingNegative {
+    color: #e74c3c;
+    font-weight: 500;
+}
