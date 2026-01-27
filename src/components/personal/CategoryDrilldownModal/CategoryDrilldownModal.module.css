@@ -204,9 +204,9 @@
 }
 
 .monthLabel {
+    white-space: nowrap;
     font-size: 0.625rem;
     color: var(--color-text-tertiary);
-    white-space: nowrap;
 }
 
 .legend {
@@ -316,8 +316,11 @@
     }
 
     .modal {
-        max-height: 100vh;
-        border-radius: 0;
+        max-height: 90vh;
+    }
+
+    .monthLabel {
+        font-size: 0.55rem;
     }
 
     .chart {

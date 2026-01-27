@@ -57,6 +57,7 @@
 }
 
 .monthLabel {
+  white-space: nowrap;
   position: absolute;
   bottom: 0;
   font-size: 0.7rem;
@@ -136,4 +137,10 @@
 .tooltipValue {
   font-weight: 500;
   color: var(--color-text-main);
+}
+
+@media (max-width: 600px) {
+  .monthLabel {
+    font-size: 0.55rem;
+  }
 }
