@@ -391,3 +391,44 @@ export const getPersonalYearlyCategoryComparison = cache(
     return comparison;
   }
 );
+
+// Get the most frequent "who" in this year's budgets
+export const getMostFrequentWhoForYear = cache(async (year: number): Promise<string | null> => {
+  const user = await getAuthenticatedUser();
+  if (!user) return null;
+
+  const budgets = await prisma.personalBudget.findMany({
+    where: {
+      userId: user.id,
+      targetYear: year,
+      who: {
+        not: null,
+      },
+    },
+    select: {
+      who: true,
+    },
+  });
+
+  // Count occurrences of each "who"
+  const whoCounts: Record<string, number> = {};
+  for (const budget of budgets) {
+    const who = budget.who?.trim();
+    if (who && who.length > 0) {
+      whoCounts[who] = (whoCounts[who] || 0) + 1;
+    }
+  }
+
+  // Find the most frequent one
+  let maxCount = 0;
+  let mostFrequentWho: string | null = null;
+
+  for (const [who, count] of Object.entries(whoCounts)) {
+    if (count > maxCount) {
+      maxCount = count;
+      mostFrequentWho = who;
+    }
+  }
+
+  return mostFrequentWho;
+});

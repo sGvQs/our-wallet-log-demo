@@ -47,3 +47,27 @@
 .skeletonCardSmall {
   height: 150px;
 }
+
+.funFact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+}
+
+.funFactIcon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.funFactText {
+  font-size: 0.95rem;
+  color: var(--color-text-main);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.funFactText strong {
+  color: var(--color-accent);
+  font-weight: 600;
+}

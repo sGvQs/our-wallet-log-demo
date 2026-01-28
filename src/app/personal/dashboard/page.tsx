@@ -4,6 +4,7 @@ import {
   getPersonalCategoryBudgetComparison,
   getPersonalDashboardDataYearly,
   getPersonalYearlyCategoryComparison,
+  getMostFrequentWhoForYear,
 } from '@/backend/services/personal-data';
 import {
   SummaryCard,
@@ -18,6 +19,7 @@ import {
 import type { ViewMode } from '@/components/personal';
 import { Skeleton } from '@/components/common';
 import { Card } from '@/components/ui/Card';
+import { Sparkles } from 'lucide-react';
 import styles from './page.module.css';
 
 interface SearchParams {
@@ -92,9 +94,10 @@ async function MonthlyDashboardContent({ currentMonth }: { currentMonth: string 
 }
 
 async function YearlyDashboardContent({ year }: { year: number }) {
-  const [data, categoryComparison] = await Promise.all([
+  const [data, categoryComparison, mostFrequentWho] = await Promise.all([
     getPersonalDashboardDataYearly(year),
     getPersonalYearlyCategoryComparison(year),
+    getMostFrequentWhoForYear(year),
   ]);
 
   if (!data) {
@@ -117,6 +120,18 @@ async function YearlyDashboardContent({ year }: { year: number }) {
         yearlyUsedPercent={data.yearlyUsedPercent}
       />
       <YearlyCategoryBudgetCard comparisons={categoryComparison ?? []} year={year} />
+      {mostFrequentWho && (
+        <div className={styles.fullWidth}>
+          <Card>
+            <div className={styles.funFact}>
+              <Sparkles size={20} className={styles.funFactIcon} />
+              <p className={styles.funFactText}>
+                今年<strong>{mostFrequentWho}</strong>と一番遊ぶ予定があります
+              </p>
+            </div>
+          </Card>
+        </div>
+      )}
       <div className={styles.fullWidth}>
         <MonthlyTrendChart monthlyData={data.monthlyData} year={data.year} />
       </div>
