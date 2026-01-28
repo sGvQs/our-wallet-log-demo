@@ -117,3 +117,41 @@
     width: 100%;
   }
 }
+
+/* Dialog styles */
+.dialogContent {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  padding: 0;
+  overflow: hidden;
+  max-width: 440px;
+  width: calc(100% - 2rem);
+}
+
+.dialogHeader {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(to bottom, var(--color-bg-surface), rgba(248, 247, 244, 0.5));
+}
+
+.dialogTitle {
+  color: var(--color-text-main);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.dialogSubtitle {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.dialogBody {
+  padding: 1.25rem 1.5rem 1.5rem;
+  overflow-y: auto;
+  max-height: 70vh;
+}

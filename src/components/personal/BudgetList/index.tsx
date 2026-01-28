@@ -218,91 +218,93 @@ export function BudgetList({ budgets }: BudgetListProps) {
       </div>
 
       <Dialog open={!!editingBudget} onOpenChange={(open) => !open && handleCloseEdit()}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>予算を編集</DialogTitle>
+        <DialogContent showCloseButton={false} className={styles.dialogContent}>
+          <DialogHeader className={styles.dialogHeader}>
+            <DialogTitle className={styles.dialogTitle}>予算を編集</DialogTitle>
             {editingBudget && (
-              <DialogDescription>
+              <DialogDescription className={styles.dialogSubtitle}>
                 {PERSONAL_CATEGORIES[editingBudget.category]} - {editingBudget.targetYear}年{editingBudget.targetMonth}月
               </DialogDescription>
             )}
           </DialogHeader>
 
-          <form onSubmit={onSubmitEdit} className={formStyles.form}>
-            <div className={formStyles.fieldGroup}>
-              <label className={formStyles.label}>予算金額</label>
-              <div className={formStyles.amountWrapper}>
-                <span className={formStyles.currencySymbol}>¥</span>
-                <input
-                  type="number"
-                  {...register('amount', { valueAsNumber: true })}
-                  placeholder="0"
-                  className={formStyles.amountInput}
-                />
-              </div>
-              {errors.amount && <p className={formStyles.error}>{errors.amount.message}</p>}
-            </div>
-
-            <div className={formStyles.fieldGroup}>
-              <label className={formStyles.label}>誰と（任意）</label>
-              <input {...register('who')} placeholder="メモ" className={formStyles.input} />
-              {errors.who && <p className={formStyles.error}>{errors.who.message}</p>}
-            </div>
-
-            <div className={formStyles.fieldGroup}>
-              <label className={formStyles.label}>内容（任意）</label>
-              <input {...register('description')} placeholder="メモ" className={formStyles.input} />
-              {errors.description && <p className={formStyles.error}>{errors.description.message}</p>}
-            </div>
-
-            {editingBudget?.isRecurring && editingBudget?.recurringGroupId && (
+          <div className={styles.dialogBody}>
+            <form onSubmit={onSubmitEdit} className={formStyles.form}>
               <div className={formStyles.fieldGroup}>
-                <label className={formStyles.label}>適用範囲</label>
-                <div className={formStyles.radioGroup}>
-                  <label className={formStyles.radioLabel}>
-                    <input
-                      type="radio"
-                      className={formStyles.radio}
-                      checked={!applyToFuture}
-                      onChange={() => reset({ ...watch(), applyToFuture: false })}
-                    />
-                    <span>この月のみ</span>
-                  </label>
-                  <label className={formStyles.radioLabel}>
-                    <input
-                      type="radio"
-                      className={formStyles.radio}
-                      checked={applyToFuture}
-                      onChange={() => reset({ ...watch(), applyToFuture: true })}
-                    />
-                    <span>この月以降すべて（{editingBudget.targetMonth}月〜12月）</span>
-                  </label>
+                <label className={formStyles.label}>予算金額</label>
+                <div className={formStyles.amountWrapper}>
+                  <span className={formStyles.currencySymbol}>¥</span>
+                  <input
+                    type="number"
+                    {...register('amount', { valueAsNumber: true })}
+                    placeholder="0"
+                    className={formStyles.amountInput}
+                  />
                 </div>
+                {errors.amount && <p className={formStyles.error}>{errors.amount.message}</p>}
               </div>
-            )}
 
-            {errors.root && (
-              <div className={formStyles.errorBox}>
-                <p className={formStyles.errorText}>{errors.root.message}</p>
+              <div className={formStyles.fieldGroup}>
+                <label className={formStyles.label}>誰と（任意）</label>
+                <input {...register('who')} placeholder="メモ" className={formStyles.input} />
+                {errors.who && <p className={formStyles.error}>{errors.who.message}</p>}
               </div>
-            )}
 
-            <div className={formStyles.buttonGroup}>
-              <button type="button" onClick={handleCloseEdit} disabled={isPending} className={formStyles.cancelButton}>
-                キャンセル
-              </button>
-              <button type="submit" disabled={isPending} className={formStyles.submitButton}>
-                {isPending ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" />
-                    <span>処理中...</span>
-                  </>
-                ) : (
-                  <span>更新する</span>
-                )}
-              </button>
-            </div>
-          </form>
+              <div className={formStyles.fieldGroup}>
+                <label className={formStyles.label}>内容（任意）</label>
+                <input {...register('description')} placeholder="メモ" className={formStyles.input} />
+                {errors.description && <p className={formStyles.error}>{errors.description.message}</p>}
+              </div>
+
+              {editingBudget?.isRecurring && editingBudget?.recurringGroupId && (
+                <div className={formStyles.fieldGroup}>
+                  <label className={formStyles.label}>適用範囲</label>
+                  <div className={formStyles.radioGroup}>
+                    <label className={formStyles.radioLabel}>
+                      <input
+                        type="radio"
+                        className={formStyles.radio}
+                        checked={!applyToFuture}
+                        onChange={() => reset({ ...watch(), applyToFuture: false })}
+                      />
+                      <span>この月のみ</span>
+                    </label>
+                    <label className={formStyles.radioLabel}>
+                      <input
+                        type="radio"
+                        className={formStyles.radio}
+                        checked={applyToFuture}
+                        onChange={() => reset({ ...watch(), applyToFuture: true })}
+                      />
+                      <span>この月以降すべて（{editingBudget.targetMonth}月〜12月）</span>
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              {errors.root && (
+                <div className={formStyles.errorBox}>
+                  <p className={formStyles.errorText}>{errors.root.message}</p>
+                </div>
+              )}
+
+              <div className={formStyles.buttonGroup}>
+                <button type="button" onClick={handleCloseEdit} disabled={isPending} className={formStyles.cancelButton}>
+                  キャンセル
+                </button>
+                <button type="submit" disabled={isPending} className={formStyles.submitButton}>
+                  {isPending ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      <span>処理中...</span>
+                    </>
+                  ) : (
+                    <span>更新する</span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </DialogContent>
       </Dialog>
     </>
