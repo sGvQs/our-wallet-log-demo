@@ -59,8 +59,9 @@ export default function GuidePage() {
                     <div className={styles.sectionContent}>
                         <p>パートナーと一緒に家計を管理できます。</p>
                         <ul className={styles.featureList}>
-                            <li>招待コードでパートナーをチームに招待</li>
-                            <li>お互いの支出を共有・確認</li>
+                            <li>「チームの設定」から「チーム」を作成して、表示される招待コードをパートナーに共有</li>
+                            <li>パートナーは「チームの設定」からそのコードを入力してチームに参加</li>
+                            <li>お互いの支出がリアルタイムで共有・確認できる</li>
                             <li>「どっちがいくら払った？」がすぐわかる</li>
                         </ul>
                     </div>
