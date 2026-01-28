@@ -94,10 +94,11 @@ async function MonthlyDashboardContent({ currentMonth }: { currentMonth: string 
 }
 
 async function YearlyDashboardContent({ year }: { year: number }) {
-  const [data, categoryComparison, mostFrequentWho] = await Promise.all([
+  const [data, categoryComparison, mostFrequentWho, lastYearMostFrequentWho] = await Promise.all([
     getPersonalDashboardDataYearly(year),
     getPersonalYearlyCategoryComparison(year),
     getMostFrequentWhoForYear(year),
+    getMostFrequentWhoForYear(year - 1),
   ]);
 
   if (!data) {
@@ -109,6 +110,9 @@ async function YearlyDashboardContent({ year }: { year: number }) {
       </Card>
     );
   }
+
+  // 2年連続同じ人が一番多いかチェック
+  const isTwoYearStreak = mostFrequentWho && lastYearMostFrequentWho && mostFrequentWho === lastYearMostFrequentWho;
 
   return (
     <div className={styles.grid}>
@@ -125,9 +129,16 @@ async function YearlyDashboardContent({ year }: { year: number }) {
           <Card>
             <div className={styles.funFact}>
               <Sparkles size={20} className={styles.funFactIcon} />
-              <p className={styles.funFactText}>
-                今年<strong>{mostFrequentWho}</strong>と一番遊ぶ予定があります
-              </p>
+              <div>
+                <p className={styles.funFactText}>
+                  今年は<strong>{mostFrequentWho}</strong>と一番遊ぶ予定があります✌️
+                </p>
+                {isTwoYearStreak && (
+                  <p className={styles.funFactHint}>
+                    そろそろ、同棲を考えてもいいかもしれませんね 🙈
+                  </p>
+                )}
+              </div>
             </div>
           </Card>
         </div>
