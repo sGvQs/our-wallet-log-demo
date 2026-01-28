@@ -71,8 +71,6 @@ export function BudgetList({ budgets }: BudgetListProps) {
   const applyToFuture = watch('applyToFuture');
 
   const handleDelete = (budgetId: number) => {
-    if (!confirm('この予算を削除しますか？')) return;
-
     startTransition(async () => {
       updateOptimistic(budgetId);
       await deletePersonalBudget(budgetId);

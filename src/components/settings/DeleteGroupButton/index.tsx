@@ -18,14 +18,12 @@ export function DeleteGroupButton({ groupId, groupName }: DeleteGroupButtonProps
       `チーム「${groupName}」を削除しますか？\n削除する場合はチーム名を入力してください。`
     );
     if (confirmName !== groupName) {
-      if (confirmName !== null) alert('チーム名が一致しません');
       return;
     }
 
     setLoading(true);
-    const res = await deleteGroup(groupId);
+    await deleteGroup(groupId);
     setLoading(false);
-    if (res.error) alert(res.error);
   };
 
   return (

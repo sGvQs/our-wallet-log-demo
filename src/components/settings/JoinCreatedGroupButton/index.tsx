@@ -12,7 +12,6 @@ export function JoinCreatedGroupButton({ groupId }: JoinCreatedGroupButtonProps)
   const [state, action, isPending] = useActionState(async () => {
     const result = await joinCreatedGroup(groupId);
     if (result.error) {
-      alert(result.error);
       return { error: result.error };
     }
     return { success: true };

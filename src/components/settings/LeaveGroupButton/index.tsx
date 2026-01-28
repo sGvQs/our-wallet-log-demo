@@ -14,7 +14,6 @@ export function LeaveGroupButton({ groupId, disabled }: LeaveGroupButtonProps) {
   const [loading, setLoading] = useState(false);
 
   const handleLeave = async () => {
-    if (!confirm('本当にこのチームから抜けますか？')) return;
     setLoading(true);
     await leaveGroup(groupId);
     setLoading(false);

@@ -36,8 +36,6 @@ export function PersonalExpenseList({ expenses }: PersonalExpenseListProps) {
   );
 
   const handleDelete = (expenseId: string) => {
-    if (!confirm('この支出を削除しますか？')) return;
-
     startTransition(async () => {
       updateOptimistic(expenseId);
       await deletePersonalExpense(expenseId);
