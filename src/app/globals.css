@@ -244,6 +244,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  padding-bottom: 4rem;
 }
 
 .dashboard-header {
@@ -473,7 +474,7 @@ button {
     padding: 0.15rem 0.25rem;
   }
 
-  .expense-shop{
+  .expense-shop {
     font-size: 0.7rem;
   }
 
@@ -554,7 +555,9 @@ button {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @theme inline {
