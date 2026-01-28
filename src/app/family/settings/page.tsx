@@ -59,13 +59,6 @@ export default async function SettingsPage() {
                     />
                   )}
 
-                  <SplitRatioSlider
-                    groupId={group.id}
-                    initialRatio={group.splitRatio ?? 50}
-                    creatorName={creator?.name || creator?.email?.split('@')[0] || 'オーナー'}
-                    partnerName={partner?.name || partner?.email?.split('@')[0] || 'パートナー'}
-                  />
-
                   <div className={styles.cardFooter}>
                     <div className={styles.inviteCode}>
                       招待コード: <span className={styles.codeValue}>{group.inviteCode}</span>
