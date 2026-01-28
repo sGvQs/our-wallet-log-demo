@@ -10,7 +10,7 @@ import './globals.css'
 import { MonthProvider } from '@/context/MonthContext'
 import { Suspense } from 'react'
 import { TypingAnimation } from "@/components/ui/typing-animation"
-import { ModeSwitch } from '@/components/common'
+import { ModeSwitch, FloatingGuideLink } from '@/components/common'
 import { ClientUserButton } from '@/components/common/ClientUserButton'
 
 const primaryFont = M_PLUS_Rounded_1c({
@@ -85,6 +85,7 @@ export default function RootLayout({
                   <Suspense fallback={<div>Loading...</div>}>
                     {children}
                   </Suspense>
+                  <FloatingGuideLink />
                 </div>
               </MonthProvider>
             </Suspense>
