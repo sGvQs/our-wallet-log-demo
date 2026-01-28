@@ -26,6 +26,10 @@ export default function GuidePage() {
                             それぞれのデータは完全に分離されているので、プライベートな支出と
                             パートナーとの共有支出を明確に分けて管理できます。
                         </p>
+                        <p>
+                            <span className={styles.highlight}>右上のボタン</span>から、いつでも
+                            モードを切り替えることができます。
+                        </p>
                     </div>
                 </section>
 
