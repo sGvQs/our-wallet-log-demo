@@ -1,0 +1,91 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.welcome {
+    margin-bottom: 2.5rem;
+}
+
+.welcomeTitle {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--color-text-main);
+    margin-bottom: 0.5rem;
+}
+
+.welcomeSubtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+}
+
+.modeGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 600px) {
+    .modeGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.modeCard {
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: block;
+}
+
+.modeCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-accent);
+}
+
+.modeIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.modeTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 0.5rem;
+}
+
+.modeDescription {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.guideLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+.guideLink:hover {
+    color: var(--color-accent);
+    background: var(--color-bg-elevated);
+}
+
+.guideIcon {
+    font-size: 1.1rem;
+}
