@@ -75,3 +75,9 @@
   color: var(--color-text-muted);
   opacity: 0.5;
 }
+
+.editButton {
+  padding: 0.25rem 0.5rem;
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}

@@ -14,21 +14,26 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from '@/components/ui/drawer';
-import { PersonalExpenseForm } from '../PersonalExpenseForm';
+import { PersonalExpenseForm, PersonalExpense } from '../PersonalExpenseForm';
 import styles from '../shared/Dialog.module.css';
 
 interface PersonalExpenseDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess?: () => void;
+  expense?: PersonalExpense;
 }
 
 export function PersonalExpenseDialog({
   open,
   onOpenChange,
   onSuccess,
+  expense,
 }: PersonalExpenseDialogProps) {
   const isMobile = useIsMobile();
+  const isEditing = !!expense;
+  const title = isEditing ? '支出を編集' : '支出を記録';
+  const description = isEditing ? '支出内容を変更しましょう' : '個人の支出を入力しましょう';
 
   const handleSuccess = () => {
     onOpenChange(false);
@@ -44,13 +49,13 @@ export function PersonalExpenseDialog({
       <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent className={styles.drawerContent}>
           <DrawerHeader className="text-center pb-2">
-            <DrawerTitle className={styles.drawerTitle}>支出を記録</DrawerTitle>
+            <DrawerTitle className={styles.drawerTitle}>{title}</DrawerTitle>
             <DrawerDescription className={styles.drawerDescription}>
-              個人の支出を入力しましょう
+              {description}
             </DrawerDescription>
           </DrawerHeader>
           <div className={styles.drawerBody}>
-            <PersonalExpenseForm onSuccess={handleSuccess} onCancel={handleCancel} />
+            <PersonalExpenseForm expense={expense} onSuccess={handleSuccess} onCancel={handleCancel} />
           </div>
         </DrawerContent>
       </Drawer>
@@ -61,11 +66,11 @@ export function PersonalExpenseDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className={styles.dialogContent}>
         <DialogHeader className={styles.dialogHeader}>
-          <DialogTitle className={styles.dialogTitle}>支出を記録</DialogTitle>
-          <p className={styles.dialogSubtitle}>個人の支出を入力しましょう</p>
+          <DialogTitle className={styles.dialogTitle}>{title}</DialogTitle>
+          <p className={styles.dialogSubtitle}>{description}</p>
         </DialogHeader>
         <div className={styles.dialogBody}>
-          <PersonalExpenseForm onSuccess={handleSuccess} onCancel={handleCancel} />
+          <PersonalExpenseForm expense={expense} onSuccess={handleSuccess} onCancel={handleCancel} />
         </div>
       </DialogContent>
     </Dialog>

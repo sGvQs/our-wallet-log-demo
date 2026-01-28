@@ -1,12 +1,13 @@
 'use client';
 
-import { useTransition, useOptimistic } from 'react';
+import { useState, useTransition, useOptimistic } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { PERSONAL_CATEGORIES, PERSONAL_CATEGORY_COLORS } from '@/lib/constants/categories';
 import { deletePersonalExpense } from '@/backend/actions/personal-expenses';
 import { PersonalExpenseCategory } from '@prisma/client';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Pencil } from 'lucide-react';
+import { PersonalExpenseDialog } from '../PersonalExpenseDialog';
 import styles from './PersonalExpenseList.module.css';
 
 interface PersonalExpense {
@@ -27,6 +28,7 @@ interface PersonalExpenseListProps {
 
 export function PersonalExpenseList({ expenses }: PersonalExpenseListProps) {
   const [isPending, startTransition] = useTransition();
+  const [editingExpense, setEditingExpense] = useState<PersonalExpense | null>(null);
 
   const [optimisticExpenses, updateOptimistic] = useOptimistic(
     expenses,
@@ -42,6 +44,14 @@ export function PersonalExpenseList({ expenses }: PersonalExpenseListProps) {
     });
   };
 
+  const handleEdit = (expense: PersonalExpense) => {
+    setEditingExpense(expense);
+  };
+
+  const handleEditClose = () => {
+    setEditingExpense(null);
+  };
+
   if (optimisticExpenses.length === 0) {
     return (
       <Card>
@@ -53,53 +63,71 @@ export function PersonalExpenseList({ expenses }: PersonalExpenseListProps) {
   }
 
   return (
-    <div className={styles.container}>
-      {optimisticExpenses.map((expense) => {
-        const categoryColor = PERSONAL_CATEGORY_COLORS[expense.category] || '#888';
-        const categoryLabel = PERSONAL_CATEGORIES[expense.category];
-        const dateStr = new Date(expense.date).toLocaleDateString('ja-JP', {
-          month: 'short',
-          day: 'numeric',
-        });
+    <>
+      <div className={styles.container}>
+        {optimisticExpenses.map((expense) => {
+          const categoryColor = PERSONAL_CATEGORY_COLORS[expense.category] || '#888';
+          const categoryLabel = PERSONAL_CATEGORIES[expense.category];
+          const dateStr = new Date(expense.date).toLocaleDateString('ja-JP', {
+            month: 'short',
+            day: 'numeric',
+          });
 
-        return (
-          <Card key={expense.id} className="expense-card">
-            <div className={styles.cardContent}>
-              <div className={styles.info}>
-                <div className={styles.infoHeader}>
-                  <span
-                    className={styles.badge}
-                    style={{
-                      background: `${categoryColor}15`,
-                      color: categoryColor,
-                    }}
-                  >
-                    {categoryLabel}
-                  </span>
-                  <span className={styles.date}>{dateStr}</span>
+          return (
+            <Card key={expense.id} className="expense-card">
+              <div className={styles.cardContent}>
+                <div className={styles.info}>
+                  <div className={styles.infoHeader}>
+                    <span
+                      className={styles.badge}
+                      style={{
+                        background: `${categoryColor}15`,
+                        color: categoryColor,
+                      }}
+                    >
+                      {categoryLabel}
+                    </span>
+                    <span className={styles.date}>{dateStr}</span>
+                  </div>
+                  {expense.shop && <p className={styles.shop}>{expense.shop}</p>}
+                  {expense.description && (
+                    <p className={styles.description}>{expense.description}</p>
+                  )}
                 </div>
-                {expense.shop && <p className={styles.shop}>{expense.shop}</p>}
-                {expense.description && (
-                  <p className={styles.description}>{expense.description}</p>
-                )}
-              </div>
 
-              <div className={styles.actions}>
-                <span className={styles.amount}>¥{expense.amount.toLocaleString()}</span>
-                <Button
-                  variant="ghost"
-                  disabled={isPending}
-                  onClick={() => handleDelete(expense.id)}
-                  className={styles.deleteButton}
-                  aria-label="削除"
-                >
-                  <Trash2 size={14} />
-                </Button>
+                <div className={styles.actions}>
+                  <span className={styles.amount}>¥{expense.amount.toLocaleString()}</span>
+                  <Button
+                    variant="ghost"
+                    disabled={isPending}
+                    onClick={() => handleEdit(expense)}
+                    className={styles.editButton}
+                    aria-label="編集"
+                  >
+                    <Pencil size={14} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    disabled={isPending}
+                    onClick={() => handleDelete(expense.id)}
+                    className={styles.deleteButton}
+                    aria-label="削除"
+                  >
+                    <Trash2 size={14} />
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Card>
-        );
-      })}
-    </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      <PersonalExpenseDialog
+        open={!!editingExpense}
+        onOpenChange={(open) => !open && handleEditClose()}
+        expense={editingExpense || undefined}
+        onSuccess={handleEditClose}
+      />
+    </>
   );
 }

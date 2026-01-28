@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
 import { z } from 'zod';
 import { PERSONAL_CATEGORIES } from '@/lib/constants/categories';
-import { addPersonalExpense } from '@/backend/actions/personal-expenses';
+import { addPersonalExpense, updatePersonalExpense } from '@/backend/actions/personal-expenses';
 import { PersonalExpenseCategory } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
 import styles from '../shared/Form.module.css';
@@ -28,7 +28,20 @@ const personalExpenseSchema = z.object({
 
 type PersonalExpenseFormData = z.infer<typeof personalExpenseSchema>;
 
+export interface PersonalExpense {
+  id: string;
+  amount: number;
+  description: string | null;
+  shop: string | null;
+  date: Date;
+  category: PersonalExpenseCategory;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 interface PersonalExpenseFormProps {
+  expense?: PersonalExpense;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
@@ -37,8 +50,33 @@ const FORM_CATEGORIES = Object.entries(PERSONAL_CATEGORIES).filter(
   ([key]) => key !== 'ALL'
 ) as [PersonalExpenseCategory, string][];
 
-export function PersonalExpenseForm({ onSuccess, onCancel }: PersonalExpenseFormProps) {
+export function PersonalExpenseForm({ expense, onSuccess, onCancel }: PersonalExpenseFormProps) {
   const [isPending, startTransition] = useTransition();
+  const isEditing = !!expense;
+
+  const getDefaultValues = (): PersonalExpenseFormData => {
+    if (expense) {
+      const date = new Date(expense.date);
+      return {
+        amount: expense.amount,
+        description: expense.description || '',
+        shop: expense.shop || '',
+        category: expense.category as z.infer<typeof PersonalExpenseCategoryEnum>,
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate(),
+      };
+    }
+    return {
+      amount: 0,
+      description: '',
+      shop: '',
+      category: 'FOOD',
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1,
+      day: new Date().getDate(),
+    };
+  };
 
   const {
     register,
@@ -48,15 +86,7 @@ export function PersonalExpenseForm({ onSuccess, onCancel }: PersonalExpenseForm
     reset,
   } = useForm<PersonalExpenseFormData>({
     resolver: zodResolver(personalExpenseSchema),
-    defaultValues: {
-      amount: 0,
-      description: '',
-      shop: '',
-      category: 'FOOD',
-      year: new Date().getFullYear(),
-      month: new Date().getMonth() + 1,
-      day: new Date().getDate(),
-    },
+    defaultValues: getDefaultValues(),
   });
 
   const onSubmit = handleSubmit((data: PersonalExpenseFormData) => {
@@ -70,7 +100,9 @@ export function PersonalExpenseForm({ onSuccess, onCancel }: PersonalExpenseForm
       formData.append('month', data.month.toString());
       formData.append('day', data.day.toString());
 
-      const result = await addPersonalExpense(null, formData);
+      const result = isEditing
+        ? await updatePersonalExpense(expense.id, formData)
+        : await addPersonalExpense(null, formData);
 
       if (result?.error) {
         setError('root', { message: result.error });
